@@ -1,0 +1,17 @@
+line 1 column 1 - Warning: missing <!DOCTYPE> declaration
+line 1 column 1 - Warning: inserting implicit <body>
+line 1 column 1 - Warning: inserting missing 'title' element
+line 159 column 4 - Warning: <img> lacks "alt" attribute
+line 440 column 4 - Warning: <img> lacks "alt" attribute
+line 441 column 4 - Warning: <img> lacks "alt" attribute
+line 494 column 4 - Warning: <img> lacks "alt" attribute
+line 502 column 4 - Warning: <img> lacks "alt" attribute
+line 520 column 4 - Warning: <img> lacks "alt" attribute
+line 540 column 4 - Warning: <img> lacks "alt" attribute
+line 774 column 4 - Warning: <img> lacks "alt" attribute
+line 896 column 4 - Warning: <img> lacks "alt" attribute
+line 1058 column 4 - Warning: <img> lacks "alt" attribute
+line 1187 column 4 - Warning: <img> lacks "alt" attribute
+line 1353 column 4 - Warning: <img> lacks "alt" attribute
+line 1445 column 4 - Warning: <img> lacks "alt" attribute
+line 1917 column 20 - Warning: <img> lacks "alt" attribute
