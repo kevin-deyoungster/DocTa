@@ -1,14 +1,13 @@
-from app import app
 import os
-from flask import render_template, request, send_file
-from werkzeug import secure_filename
-from datetime import datetime
 import shutil
+from app import app
 from app import word2html
+from datetime import datetime
+from werkzeug import secure_filename
+from flask import render_template, request, send_file
 
 
 @app.route('/')
-@app.route('/index')
 def index():
     title = "Chalkboard Education DOCta v1.0"
     return render_template('index.html', title=title)
@@ -16,17 +15,21 @@ def index():
 
 @app.route('/upload', methods=['POST', 'GET'])
 def upload():
-    f = request.files.getlist("file[]")
+    files = request.files.getlist("file[]")
+
+    # Create Job Folder
     time_stamp = str(datetime.now().strftime("%m-%d-%Y.%H-%M-%S"))
-    time_stamp_dir = os.path.join(
-        app.config['UPLOAD_FOLDER'], time_stamp)
-    os.makedirs(time_stamp_dir)
+    job_dir = os.path.join(
+        app.config['JOBS_FOLDER'], time_stamp)
+
+    os.makedirs(job_dir)
 
     # Convert each file
-    for file in f:
-        new_path = os.path.join(time_stamp_dir, secure_filename(file.filename))
+    for file in files:
+        new_path = os.path.join(job_dir, secure_filename(file.filename))
         file.save(new_path)
         word2html.convert_to_html(new_path)
 
-    zip_file = os.path.join(time_stamp_dir, time_stamp)
-    return send_file(shutil.make_archive(zip_file, 'zip', time_stamp_dir), as_attachment=True)
+    # Archive completed job and send the zip
+    zip_file = shutil.make_archive(job_dir, 'zip', job_dir)
+    return send_file(zip_file, as_attachment=True)

@@ -1,6 +1,6 @@
 from flask import Flask
+import os
 
 app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = "/media/kevin/Windows/Users/kaminoshinyu/Desktop/Chalkboard/DOCta/temp"
-
+app.config['JOBS_FOLDER'] = "{}/jobs".format(os.getcwd())
 from app import routes
