@@ -2,6 +2,8 @@ from app import app
 import os
 from flask import render_template, request, send_file
 from werkzeug import secure_filename
+from datetime import datetime
+import shutil
 
 
 @app.route('/')
@@ -14,14 +16,19 @@ def index():
 @app.route('/upload', methods=['POST', 'GET'])
 def upload():
     f = request.files.getlist("file[]")
-    print(len(f))
-    file = f[0]
-    # for file in f:
-    new_path = os.path.join(
-        app.config['UPLOAD_FOLDER'], secure_filename(file.filename))
-    file.save(new_path)
+    time_stamp = str(datetime.now().strftime("%m-%d-%Y.%H-%M-%S"))
+    time_stamp_dir = os.path.join(
+        app.config['UPLOAD_FOLDER'], time_stamp)
+    os.makedirs(time_stamp_dir)
 
-    return send_file(convert_to_html(new_path), as_attachment=True)
+    # Convert each file
+    for file in f:
+        new_path = os.path.join(time_stamp_dir, secure_filename(file.filename))
+        file.save(new_path)
+        convert_to_html(new_path)
+
+    zip_file = os.path.join(time_stamp_dir, time_stamp)
+    return send_file(shutil.make_archive(zip_file, 'zip', time_stamp_dir), as_attachment=True)
 
 
 def convert_to_html(filename):
