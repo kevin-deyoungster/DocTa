@@ -15,10 +15,6 @@ def convert_to_html(filename):
         'wrap': 80,
     })
 
-    #
-
-    print(errors)
-
     # replace smart quotes.
     output = output.replace(u"\u2018", '&lsquo;').replace(u"\u2019", '&rsquo;')
     output = output.replace(u"\u201c", "&ldquo;").replace(u"\u201d", "&rdquo;")
@@ -26,7 +22,9 @@ def convert_to_html(filename):
     # write the output and errors
     filename, ext = os.path.splitext(filename)
     directory = os.path.dirname(filename)
-    with open(filename + ".txt", 'w') as err:
+
+    error_filename = "{0}.txt".format(filename)
+    with open(error_filename, 'w') as err:
         if(errors):
             err.write(errors)
 
