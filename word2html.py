@@ -5,8 +5,10 @@ from tidylib import tidy_document
 
 def convert_to_html(filename):
 
+    directory = os.path.dirname(filename).encode('unicode_escape').decode()
     # Do the conversion with pandoc
-    output = pypandoc.convert(filename, 'html')
+    output = pypandoc.convert(
+        filename, 'html', extra_args=[r'--extract-media=' + directory])
 
     # Clean up with tidy...
     output, errors = tidy_document(output,  options={
@@ -16,8 +18,10 @@ def convert_to_html(filename):
     })
 
     # replace smart quotes.
-    output = output.replace(u"\u2018", '&lsquo;').replace(u"\u2019", '&rsquo;')
-    output = output.replace(u"\u201c", "&ldquo;").replace(u"\u201d", "&rdquo;")
+    output = output.replace(u"\u2018", '&lsquo;').replace(
+        u"\u2019", '&rsquo;')
+    output = output.replace(u"\u201c", "&ldquo;").replace(
+        u"\u201d", "&rdquo;")
 
     # write the output and errors
     filename, ext = os.path.splitext(filename)
