@@ -30,7 +30,11 @@ def upload():
 
     # Convert each file
     for file in files:
-        new_path = os.path.join(job_dir, secure_filename(file.filename))
+        # Make a folder under the job folder for this file
+        file_dir = os.path.join(job_dir, os.path.splitext(
+            secure_filename(file.filename))[0])
+        os.makedirs(file_dir)
+        new_path = os.path.join(file_dir, secure_filename(file.filename))
         file.save(new_path)
         word2html.convert_to_html(new_path)
 
