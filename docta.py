@@ -8,7 +8,7 @@ from flask import render_template, request, send_file
 import word2html
 
 app = Flask(__name__)
-app.config['JOBS_FOLDER'] = "/home/ubuntu/flaskapp/jobs"
+app.config['JOBS_FOLDER'] = "/home/ubuntu/flaskapp/DocTa/jobs"
 
 
 @app.route('/')
