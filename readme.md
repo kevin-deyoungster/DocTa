@@ -1,6 +1,7 @@
 TODO
 
 1.  DOC files not supported. Find a way to convert them to docx first
+    1.  Looks like I'd have to connect to an external convertor APIs
 2.  Convert PDF files to doc before doing conversion
 3.  Put media in the same root as the html file
 4.  HTML file should be named as index.html
