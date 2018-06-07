@@ -8,7 +8,7 @@ from flask import render_template, request, send_file
 import word2html
 
 app = Flask(__name__)
-app.config['JOBS_FOLDER'] = "{}/jobs".format(os.getcwd())
+app.config['JOBS_FOLDER'] = "/jobs"
 
 
 @app.route('/')
@@ -44,4 +44,4 @@ def upload():
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=False)
