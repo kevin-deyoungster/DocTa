@@ -42,6 +42,10 @@ def upload():
         new_html = correct_image_paths(open(converted_file, 'r'))
         with open(converted_file, 'wb') as f:
             f.write(new_html.prettify('utf-8'))
+
+        # Rename as index.html
+        os.rename(converted_file, os.path.join(
+            os.path.dirname(converted_file), 'index.html'))
         print(converted_file)
     # Archive completed job and send the zip
     zip_file = shutil.make_archive(job_dir, 'zip', job_dir)
@@ -65,7 +69,7 @@ def correct_image_paths(html_content):
             del image['width']
         image['max-width'] = '100%'
         image['src'] = os.path.basename(image['src'])
-        print(image)
+        # print(image)
     html_content.close()
     return html
     # urls = [image['src'] for image in images]
