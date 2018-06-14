@@ -1,10 +1,8 @@
-from flask import Flask
-
 import os
 import shutil
 from datetime import datetime
 from werkzeug import secure_filename
-from flask import render_template, request, send_file
+from flask import Flask, render_template, request, send_file
 import word2html
 from bs4 import BeautifulSoup
 
@@ -14,7 +12,7 @@ app.config['JOBS_FOLDER'] = "jobs"
 
 @app.route('/')
 def index():
-    title = "Chalkboard Education DOCta v1.0"
+    title = "DOCta v1.0"
     return render_template('index.html', title=title)
 
 
