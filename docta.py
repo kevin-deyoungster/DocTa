@@ -7,6 +7,7 @@ import word2html
 from bs4 import BeautifulSoup
 from os import path
 import data
+import html_polisher
 
 app = Flask(__name__)
 
@@ -37,16 +38,16 @@ def upload():
         file.save(new_path)
         converted_file = word2html.convert_to_html(new_path)
         copy_media_files(path.join(file_dir, 'media'), file_dir)
-        new_html = correct_image_paths(open(converted_file, 'r'))
-        with open(converted_file, 'wb') as f:
-            f.write(new_html.prettify('utf-8'))
+        html_polisher.polish(converted_file)
 
         # Rename as index.html
         os.rename(converted_file, path.join(
             path.dirname(converted_file), 'index.html'))
         print(converted_file)
+
     # Archive completed job and send the zip
     zip_file = shutil.make_archive(job_dir, 'zip', job_dir)
+    shutil.rmtree(job_dir)
     return send_file(zip_file, as_attachment=True)
 
 
@@ -54,24 +55,6 @@ def copy_media_files(dir, dest_dir):
     for filename in os.listdir(dir):
         shutil.move(path.join(dir, filename), dest_dir)
     os.rmdir(dir)
-
-
-def correct_image_paths(html_content):
-    html = BeautifulSoup(html_content, 'html.parser')
-    images = html.find_all('img')
-    for image in images:
-        if image.get('height'):
-            del image['height']
-
-        if image.get('width'):
-            del image['width']
-        image['max-width'] = '100%'
-        image['src'] = path.basename(image['src'])
-        # print(image)
-    html_content.close()
-    return html
-    # urls = [image['src'] for image in images]
-    # print(urls)
 
 
 if __name__ == '__main__':

@@ -32,7 +32,7 @@ def convert_to_html(filename):
         if(errors):
             err.write(errors)
 
-    filename = "{0}.html".format(filename)
+    filename = "{0}".format(os.path.join(directory, "index.html"))
     with open(filename, 'w') as f:
         # Python 2 "fix". If this isn't a string, encode it.
         if type(output) is not str:

@@ -8,7 +8,7 @@
 - [x] Remove styles from 'img' and lists and stuff.
 - [x] 'img' style = "max-widths
 - [ ] Convert wmf to jpgs
-- [ ] All tables should have border 1
-- [ ] Convert list styling to list typing
-- [ ] add support for underlines
-- [ ] Zip contents of the folder not the folder itself
+- [x] All tables should have border 1
+- [x] Convert list styling to list typing
+- [x] add support for underlines
+- [x] Zip contents of the folder not the folder itself
