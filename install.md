@@ -1,4 +1,4 @@
-# Installing on Ubuntu
+# Installing on Linux
 
 ## Dependencies
 
