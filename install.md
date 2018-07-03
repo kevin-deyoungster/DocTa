@@ -2,10 +2,10 @@
 
 ## Dependencies
 
-pip install pypandoc
-pip install pytidylib
-pip install flask
-pip install bs4
+1.  pip install pypandoc
+2.  pip install pytidylib
+3.  pip install flask
+4.  pip install bs4
 
 sudo apt-get install pandoc
 sudo apt-get install tidy
