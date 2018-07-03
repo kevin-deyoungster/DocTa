@@ -6,9 +6,8 @@
 2.  pip install pytidylib
 3.  pip install flask
 4.  pip install bs4
-
-sudo apt-get install pandoc
-sudo apt-get install tidy
+5.  sudo apt-get install pandoc
+6.  sudo apt-get install tidy
 
 ## Running the program (run in working dir)
 
