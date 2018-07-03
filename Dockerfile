@@ -10,7 +10,7 @@ RUN apt-get update -y && \
     apt-get install -y tidy && \
     pip install --trusted-host pypi.python.org -r requirements.txt
 
-EXPOSE 80
+EXPOSE 5000
 
 ENV NAME World
 
