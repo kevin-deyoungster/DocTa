@@ -14,11 +14,8 @@ def get_list_type(html_list):
         "lower-alpha": "a",
         "upper-alpha": "A"
     }
-    if "style" in html_list:
-        type = html_list["style"].split(':')[1].replace(" ", "")
-        return(type_dict[type])
-    else:
-        return None
+    type = html_list["style"].split(':')[1].replace(" ", "")
+    return(type_dict[type])
 
 
 # Remove Blockquotes
