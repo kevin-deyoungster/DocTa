@@ -59,6 +59,7 @@ def polish(html_path):
             image['src'] = path.basename(image['src'])
 
         # Output new file
-        fw = open(html_path, "w")
-        fw.write(html.prettify())
+        fw = open(html_path, "wb")
+        output = html.prettify().encode('utf-8')
+        fw.write(output)
         fw.close()
