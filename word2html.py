@@ -8,7 +8,7 @@ def convert_to_html(filename):
     directory = os.path.dirname(filename).encode('unicode_escape').decode()
     # Do the conversion with pandoc
     output = pypandoc.convert(
-        filename, 'html', extra_args=[r'--extract-media=' + directory])
+        filename, 'html', extra_args=[r'--extract-media=' + directory, "-M2GB"])
 
     # Clean up with tidy...
     output, errors = tidy_document(output,  options={

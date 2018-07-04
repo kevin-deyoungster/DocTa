@@ -52,9 +52,10 @@ def upload():
 
 
 def copy_media_files(dir, dest_dir):
-    for filename in os.listdir(dir):
-        shutil.move(path.join(dir, filename), dest_dir)
-    os.rmdir(dir)
+    if os.path.exists(dir):
+        for filename in os.listdir(dir):
+            shutil.move(path.join(dir, filename), dest_dir)
+        os.rmdir(dir)
 
 
 if __name__ == '__main__':
