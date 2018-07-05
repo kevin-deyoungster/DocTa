@@ -27,7 +27,7 @@ from os import path
 
 
 def polish(html_path):
-    with open(html_path) as f:
+    with open(html_path, encoding="utf8") as f:
 
         # Remove blockquotes
         feed = f.read()
