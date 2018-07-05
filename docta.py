@@ -46,8 +46,9 @@ def upload():
         print(converted_file)
 
     # Archive completed job and send the zip
+    print(job_dir)
     zip_file = shutil.make_archive(job_dir, 'zip', job_dir)
-    shutil.rmtree(job_dir)
+    # shutil.rmtree(job_dir)
     return send_file(zip_file, as_attachment=True)
 
 

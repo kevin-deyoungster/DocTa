@@ -33,9 +33,11 @@ def convert_to_html(filename):
             err.write(errors)
 
     filename = "{0}".format(os.path.join(directory, "index.html"))
-    with open(filename, 'w') as f:
+    with open(filename, 'wb') as f:
         # Python 2 "fix". If this isn't a string, encode it.
         if type(output) is not str:
+            output = str(output.encode('utf-8'))
+        else:
             output = output.encode('utf-8')
         f.write(output)
 
