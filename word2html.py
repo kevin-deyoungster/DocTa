@@ -1,22 +1,24 @@
 import os
 import pypandoc
 from tidylib import tidy_document
+import tidy
 
 
 def convert_to_html(filename):
 
     directory = os.path.dirname(filename).encode('unicode_escape').decode()
     # Do the conversion with pandoc
-    output = pypandoc.convert(
+    output = pypandoc.convert_file(
         filename, 'html', extra_args=[r'--extract-media=' + directory, "-M2GB"])
 
-    # Clean up with tidy...
-    output, errors = tidy_document(output,  options={
-        'numeric-entities': 1,
-        'tidy-mark': 0,
-        'wrap': 80,
-    })
+    # # Clean up with tidy...
+    # output, errors = tidy_document(output,  options={
+    #     'numeric-entities': 1,
+    #     'tidy-mark': 0,
+    #     'wrap': 80,
+    # })
 
+    output, errors = tidy.tidy_document(output)
     # replace smart quotes.
     output = output.replace(u"\u2018", '&lsquo;').replace(
         u"\u2019", '&rsquo;')
