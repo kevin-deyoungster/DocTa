@@ -1,0 +1,113 @@
+* {
+	font-family: 'Lucida Grande', Helvetica, Arial, sans-serif;
+}
+
+body {
+	padding: 100px;
+}
+
+ol {
+	list-style-type: square;
+	padding: 20px;
+	padding-top: 0px;
+	margin: 0px;
+	margin-left: 20px;
+}
+
+hr {
+	border: 0;
+	border-top: 1px solid #dddddd;
+}
+
+.lbl-version {
+	color: white;
+	font-size: 9px;
+	background-color: #5592fb;
+	padding: 3px 6px;
+	font-size: 12px;
+}
+
+#count {
+	border: 1.2px solid black;
+	padding: 3px;
+	font-size: 12px;
+}
+
+.btn {
+	background-color: #5592fb;
+	color: white;
+	border: 1px;
+	padding: 6px 12px;
+	cursor: pointer;
+}
+
+.btn:hover {
+	background-color: #3970cf;
+}
+
+.btn:focus {
+	outline: 0;
+}
+
+.btn:active {
+	transform: translate(0px, 2px);
+	-webkit-transform: translate(0px, 2px);
+	box-shadow: 0px 1px 0px 0px;
+}
+
+.accent {
+	background-color: #f5f5f5;
+	color: #909090;
+}
+
+.accent:hover {
+	background-color: #e8e8e8;
+}
+
+.files {
+	background-color: #f8f8f8;
+	width: 480px;
+	margin-top: 18px;
+}
+
+.dropped-file {
+	padding: 9px;
+	margin: 0px;
+}
+
+.dropped-file-close {
+	float: right;
+	cursor: pointer;
+	opacity: 0.3;
+	font-weight: normal;
+	font-family: Arial, sans-serif;
+}
+
+.dropped-file-close:hover {
+	opacity: 1;
+}
+
+.info {
+	padding: 20px;
+	padding-right: 29px;
+	padding-top: 9px;
+	padding-bottom: 0px;
+	font-weight: bold;
+	margin-top: 6px;
+}
+
+.buttons {
+	width: 480px;
+}
+
+.right {
+	float: right;
+	margin-top: -6px;
+}
+.left {
+	float: left;
+}
+
+#file {
+	display: none;
+}

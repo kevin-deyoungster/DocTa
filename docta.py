@@ -9,12 +9,14 @@ from os import path
 import data
 import html_polisher
 
+from flask_cors import CORS
 app = Flask(__name__)
+CORS(app)
 
 
 @app.route('/')
 def index():
-    return render_template('index.html', title=data.HTML_HEADING)
+    return render_template('index.html', title=data.HTML_HEADING, version=data.VERSION)
 
 
 @app.route('/upload', methods=['POST'])
@@ -49,7 +51,7 @@ def upload():
     print(job_dir)
     zip_file = shutil.make_archive(job_dir, 'zip', job_dir)
     # shutil.rmtree(job_dir)
-    return send_file(zip_file, as_attachment=True)
+    return send_file(zip_file, attachment_filename='converted.zip', as_attachment=True)
 
 
 def copy_media_files(dir, dest_dir):
