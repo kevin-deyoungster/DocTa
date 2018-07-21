@@ -1,6 +1,5 @@
 import os
 import pypandoc
-from tidylib import tidy_document
 import tidy
 
 

@@ -55,6 +55,9 @@ def polish(html_path):
 
             if image.get('width'):
                 del image['width']
+
+            if image.get('style'):
+                del image['style']
             image['max-width'] = '100%'
             image['src'] = path.basename(image['src'])
 
