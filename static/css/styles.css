@@ -73,6 +73,7 @@ hr {
 .dropped-file {
 	padding: 9px;
 	margin: 0px;
+	font-weight: bold;
 }
 
 .dropped-file-close {

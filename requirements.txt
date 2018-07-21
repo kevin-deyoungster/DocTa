@@ -2,3 +2,4 @@ Flask
 pypandoc
 pytidylib
 bs4
+flask-cors

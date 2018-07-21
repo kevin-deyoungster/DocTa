@@ -53,7 +53,7 @@ FORM.onsubmit = function(event) {
 	SUBMIT_BUTTON.value = 'Converting...';
 	axios({
 		method: 'post',
-		url: '/upload',
+		url: '/convert',
 		data: formData,
 		responseType: 'arraybuffer',
 		config: { headers: { 'Content-Type': 'multipart/form-data' } }

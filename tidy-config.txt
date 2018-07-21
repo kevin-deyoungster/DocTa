@@ -1,4 +1,0 @@
-numeric-entities: yes
-tidy-mark: no
-wrap: 80
-show-warnings: no
