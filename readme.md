@@ -1,3 +1,7 @@
+# Version 1.2 Release Notes
+
+- Upgraded UI
+
 # TODO
 
 - [x] DOC files not supported. Find a way to convert them to docx first

@@ -15,7 +15,7 @@ function renderDocs() {
 		li.className = 'dropped-file';
 		li.innerText = file.name;
 		let span = document.createElement('span');
-		span.innerText = 'x';
+		span.innerText = 'X';
 		span.className = 'dropped-file-close';
 		span.onclick = () => {
 			ALL_FILES.splice(ALL_FILES.indexOf(file), 1);

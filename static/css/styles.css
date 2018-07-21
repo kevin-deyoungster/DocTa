@@ -85,13 +85,14 @@ hr {
 
 .dropped-file-close:hover {
 	opacity: 1;
+	font-weight: bold;
 }
 
 .info {
 	padding: 20px;
 	padding-right: 29px;
-	padding-top: 9px;
-	padding-bottom: 0px;
+	padding-top: 12px;
+	padding-bottom: 3px;
 	font-weight: bold;
 	margin-top: 6px;
 }
