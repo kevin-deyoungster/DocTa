@@ -33,13 +33,19 @@ def upload():
         # Make a folder under the job folder for this file
         file_dir = path.join(job_dir, path.splitext(
             secure_filename(file.filename))[0])
+        print(f'\n Making Folder for File:  {file_dir}')
+
         print(path.splitext(
             secure_filename(file.filename)))
+
         os.makedirs(file_dir)
+        a = input("sds")
+
         new_path = path.join(file_dir, secure_filename(file.filename))
         file.save(new_path)
+
         converted_file = word2html.convert_to_html(new_path)
-        copy_media_files(path.join(file_dir, 'media'), file_dir)
+        # copy_media_files(path.join(file_dir, 'media'), file_dir)
         html_polisher.polish(converted_file)
 
         # Rename as index.html

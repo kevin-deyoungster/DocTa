@@ -57,11 +57,16 @@ FORM.onsubmit = function(event) {
 		data: formData,
 		responseType: 'arraybuffer',
 		config: { headers: { 'Content-Type': 'multipart/form-data' } }
-	}).then(response => {
-		filename = response.headers['content-disposition'].split('=')[1];
-		downloadFile(response.data, filename);
-		SUBMIT_BUTTON.value = 'Convert';
-	});
+	})
+		.then(response => {
+			filename = response.headers['content-disposition'].split('=')[1];
+			downloadFile(response.data, filename);
+			SUBMIT_BUTTON.value = 'Convert';
+		})
+		.catch(err => {
+			SUBMIT_BUTTON.value = 'Convert';
+			alert(err);
+		});
 	return false;
 };
 
