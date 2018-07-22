@@ -4,7 +4,6 @@ from tidylib import tidy_document
 
 
 def convert_to_html(filename):
-    print(f'\nConverting {filename}')
     directory = os.path.dirname(filename).encode('unicode_escape').decode()
     # Do the conversion with pandoc
     output = pypandoc.convert_file(
