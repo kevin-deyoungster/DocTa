@@ -9,7 +9,7 @@ def petty_clean(html_content):
     '''
     feed = BeautifulSoup(html_content, "html.parser")
 
-    filters = [_remove_blockquotes, _convert_list_styles_to_types,
+    filters = [_remove_blockquotes, _correct_fractions, _convert_list_styles_to_types,
                _fix_image_styles_and_paths, _add_borders_to_table,
                _remove_header_span_ids, _remove_all_links,
                _convert_underlines]
