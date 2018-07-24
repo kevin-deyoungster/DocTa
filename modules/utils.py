@@ -5,10 +5,16 @@ from PIL import Image
 
 from tidylib import tidy_document
 
+'''
+    This module contains functions that are used for the basic operations such as conversion with pandoc
+    and tidylib, moving files about, saving files to storage, etc. 
+'''
+
 
 def convert_HTML(data_string, media_destination):
     '''
-        Converts docx data to html output
+        Converts docx string data to html output
+        : puts the images extracted in media_destination
     '''
     output_html = pypandoc.convert_text(
         data_string, format='docx', to='html', extra_args=[r'--extract-media=' + media_destination])
@@ -25,7 +31,7 @@ def tidy_HTML(html_content):
         'wrap': 80,
     })
 
-    # Replace smart quotes with normal quotes to avoid char encoding errors
+    # Replace smart quotes with normal quotes and em dashes to avoid char encoding errors
     output = output.replace(u"\u2018", '&lsquo;').replace(
         u"\u2019", '&rsquo;').replace(u"\u201c", "&ldquo;").replace(
         u"\u201d", "&rdquo;")
@@ -35,7 +41,7 @@ def tidy_HTML(html_content):
 
 def save_HTML_to_file(html_output, destination, filename):
     '''
-    Saves raw html output to destination + filename
+        Saves raw html output to destination + filename
     '''
     output_file = os.path.join(destination, filename)
     with open(output_file, 'wb') as f:
@@ -49,7 +55,7 @@ def save_HTML_to_file(html_output, destination, filename):
 
 def copy_media_to_root(root):
     '''
-    Copies media files extracted by pandoc, to the root directory
+        Copies media files extracted by pandoc, to the root directory
     '''
     media_folder = os.path.join(root, 'media')
     if os.path.exists(media_folder):
@@ -64,9 +70,8 @@ ignore_extensions = ['.jpg', '.png', '.jpeg', '.html', '.py']
 
 def normalize_media_files(root):
     '''
-    This makes sure its just pngs and jpgs in the media folder, everything else is converted
+        Makes sure its just pngs and jpgs in the media folder, everything else is converted
     '''
-
     for file in os.listdir(root):
         filename = os.fsdecode(file)
         name, extension = os.path.splitext(filename)
@@ -80,8 +85,14 @@ def normalize_media_files(root):
 
 
 def delete_directory(directory):
+    '''
+        Clears directory from existence
+    '''
     shutil.rmtree(directory)
 
 
 def zip_up(archive_name, directory):
+    '''
+        Compresses directory into a zip file
+    '''
     return shutil.make_archive(archive_name, 'zip', directory)

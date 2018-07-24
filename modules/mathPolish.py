@@ -1,3 +1,15 @@
+'''
+    This module is intended to successfully convert the maths code from conversion to 
+    actual html content. 
+    Currently: Its only fractions that are supported 
+    
+    NB: Highly Experimental Code, I am yet to fully understand what I've 
+    written myself. 
+'''
+
+# This script works by replacing the key functions from the converted docx
+# with symbols to enable smooth identification and so that they don't get
+# confused as normal text / strings
 function_codes = {
     "\\frac": "~",
     "frac":  "~",
@@ -9,10 +21,17 @@ function_codes = {
 
 
 def polish_fractions(raw_frac_string):
+    '''
+        Main entry point 
+    '''
     return _reduce(_tokenize(raw_frac_string))
 
 
 def _tokenize(text):
+    '''
+        Converts the encoded raw sttring into an array of tokens. Each token is independent
+        Eg. $$\\frac{3}{4}$$ -> [~, 3, 4]
+    '''
     result = []
     char_group_symbols = ['{', '}']
 
@@ -76,9 +95,11 @@ from itertools import islice
 import collections
 
 
-def consume(iterator, n):
-    "Advance the iterator n-steps ahead. If n is none, consume entirely."
-    # Use functions that consume iterators at C speed.
+def skip(iterator, n):
+    '''
+        Advance the iterator n-steps ahead. If n is none, skip entirely.
+    '''
+    # Use functions that skip iterators at C speed.
     if n is None:
         # feed the entire iterator into a zero-length deque
         collections.deque(iterator, maxlen=0)
@@ -88,27 +109,25 @@ def consume(iterator, n):
 
 
 def _reduce(tokenized_result):
-    # print(f"Converting {tokenized_result}")
+    '''
+        Takes functions from tokenizer and computes them into final html code
+    '''
     tokens = iter(range(len(tokenized_result)))
     ans = ''
     for i in tokens:
         char = tokenized_result[i]
         if char == "~":
-            consume(tokens, 2)
+            # The next two will be a fraction
+            skip(tokens, 2)
             numerator = tokenized_result[i+1].replace("#", "")
             denominator = tokenized_result[i+2].replace("#", "")
-            fraction_html = f" <sup> {numerator} </sup> &frasl; <sub> {denominator} </sub> "
-            # print(
-            #     f'Fraction {numerator} \ {denominator}')
+            fraction_html = f"<sup> {numerator} </sup> &frasl; <sub> {denominator} </sub>"
             ans = ans + fraction_html
         elif char == "@":
             ans = ans + " &#247;"
-            # print('\\')
         elif char == "^":
             ans = ans + " &#215; "
-            # print("*")
         else:
             ans = ans + " " + char + " "
-            # print(char)
 
     return(ans)

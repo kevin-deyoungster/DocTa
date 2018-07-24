@@ -1,8 +1,0 @@
- $\frac{500g}{{48cm}^{3}}$
-
- $\frac{\text{mass}}{\text{volume}}$
-
- $\frac{m}{V_{2} - \ V_{1}}$
-
- $\frac{M_{2} - \ M_{1}}{V}$
- $\frac{40.0g}{{50cm}^{3}}$

@@ -1,0 +1,1 @@
+underlined text seems to be put in span.underline, this can be used to fix the issues

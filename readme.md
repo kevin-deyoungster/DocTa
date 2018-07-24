@@ -31,3 +31,6 @@
 - [x] add support for underlines
 - [x] Zip contents of the folder not the folder itself
 - [x] Find way to extract fractions, Math Support
+- [x] Remove 'alts' from images
+- [x] Remove all links and ids, some text in docx don't show this but they really are.
+- [x] Underlined are not underlined in the result html

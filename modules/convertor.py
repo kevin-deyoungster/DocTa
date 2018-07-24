@@ -1,8 +1,14 @@
+# It seems importing just utils causes a pyton error.
 from .utils import *
 from .extras import *
 from os import path
 from datetime import datetime
 from werkzeug import secure_filename
+
+'''
+    This module serves as the entry point for the conversion process. It utilizes all 
+    the other modules and functions to successfully take files through conversion.
+'''
 
 
 def convert(files, job_folder):
@@ -27,7 +33,6 @@ def convert(files, job_folder):
 
     zip_of_job = zip_up(job_dir, job_dir)
 
-    # Delete directories
     delete_directory(job_dir)
 
     return zip_of_job
@@ -46,6 +51,7 @@ def _convert_file(file_info, job_dir):
     tidied_html = tidy_HTML(output_html)
 
     # Petty Clean the html
+    # meaning run all the custom cleaners
     petty_cleaned_html = petty_clean(tidied_html)
 
     # Save the result html content to a file
