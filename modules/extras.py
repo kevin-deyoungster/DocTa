@@ -23,7 +23,7 @@ def petty_clean(html_content):
 
 def _remove_blockquotes(html_soup):
     blockquotes = html_soup.findAll('blockquote')
-    print(len(blockquotes))
+    # print(len(blockquotes))
     for blockquote in blockquotes:
         blockquote.unwrap()
     return html_soup
@@ -119,7 +119,8 @@ def _convert_underlines(html_soup):
 
 
 def _correct_fractions(html_soup):
-    fraction_spans = html_soup.findAll("span", {"class": "math inline"})
+    fraction_spans = html_soup.findAll(
+        "span", {"class": ["math inline", "math display"]})
     for fraction_span in fraction_spans:
         stripped_fraction_line = fraction_span.text.strip()
         if "frac" in stripped_fraction_line:

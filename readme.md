@@ -1,3 +1,8 @@
+# Verson 1.5 Release Notes 
+
+- Added support for fractions
+  
+
 # Version 1.4 Release Notes
 
 - Major Refactoring!
@@ -25,4 +30,4 @@
 - [x] Convert list styling to list typing
 - [x] add support for underlines
 - [x] Zip contents of the folder not the folder itself
-- [ ] Find way to extract formulas, Math Support
+- [x] Find way to extract fractions, Math Support
