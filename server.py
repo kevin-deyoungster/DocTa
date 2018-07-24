@@ -24,4 +24,4 @@ def upload():
 
 
 if __name__ == '__main__':
-    app.run(host=data.HOST, debug=False)
+    app.run(host=data.HOST, debug=data.DEBUG_SERVER)

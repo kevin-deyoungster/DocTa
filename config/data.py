@@ -4,3 +4,4 @@ VERSION = "v1.4"
 PERSIST_JOBS = False
 HOST = "0.0.0.0"
 ZIP_DEFAULT_NAME = "converted.zip"
+DEBUG_SERVER = True

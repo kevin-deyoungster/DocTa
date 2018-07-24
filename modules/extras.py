@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup
 from os import path
+from .mathPolish import *
 
 
 def petty_clean(html_content):
@@ -8,7 +9,7 @@ def petty_clean(html_content):
     '''
     feed = BeautifulSoup(html_content, "html.parser")
 
-    filters = [_remove_blockquotes, _convert_list_styles_to_types,
+    filters = [_remove_blockquotes, _correct_fractions, _convert_list_styles_to_types,
                _fix_image_styles_and_paths, _add_borders_to_table,
                _remove_header_span_ids, _remove_all_links,
                _convert_underlines]
@@ -114,4 +115,15 @@ def _convert_underlines(html_soup):
         uspan.name = 'u'
         if uspan.get('class'):
             del uspan['class']
+    return html_soup
+
+
+def _correct_fractions(html_soup):
+    fraction_spans = html_soup.findAll("span", {"class": "math inline"})
+    for fraction_span in fraction_spans:
+        stripped_fraction_line = fraction_span.text.strip()
+        if "frac" in stripped_fraction_line:
+            fraction_html = polish_fractions(stripped_fraction_line)
+            fraction_span.replaceWith(
+                BeautifulSoup(fraction_html, 'html.parser'))
     return html_soup
