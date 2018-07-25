@@ -10,6 +10,7 @@
 6.  pip install flask-cors
 7.  sudo apt-get install pandoc
 8.  sudo apt-get install tidy
+9.  LaTex
 
 ## Running the program (run in working dir)
 

@@ -1,7 +1,11 @@
-# Verson 1.5 Release Notes 
+# Versio 1.6 Release Notes
+
+- Added Support for all math formulas, woooh!!!! Turns out they use LaTex
+- Added Autonumbering of the images
+
+# Verson 1.5 Release Notes
 
 - Added support for fractions
-  
 
 # Version 1.4 Release Notes
 

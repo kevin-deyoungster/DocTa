@@ -39,6 +39,10 @@ def convert(files, job_folder):
 
 
 def _convert_file(file_info, job_dir):
+
+    # Create the File's Directory [ turns out if there isn't any image in the file it won't create the folder]
+    os.makedirs(file_info['destination'])
+
     # Create Proper Filename
     filename = os.path.splitext(file_info["filename"])[0]
     file_info["filename"] = filename
@@ -61,5 +65,11 @@ def _convert_file(file_info, job_dir):
     # Copy the images from the media directory to the main root
     copy_media_to_root(file_info['destination'])
 
+    # Copy the math images to the main root
+    copy_math_images_to_root('math-images', file_info['destination'])
+
     # Normalize those images
     normalize_media_files(file_info['destination'])
+
+    # Rename all images again
+    rename_image_files(file_info['destination'])

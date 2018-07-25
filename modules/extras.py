@@ -1,6 +1,8 @@
 from bs4 import BeautifulSoup
 from os import path
 from .mathPolish import *
+from .mathRender import *
+from .utils import *
 
 
 def petty_clean(html_content):
@@ -9,7 +11,7 @@ def petty_clean(html_content):
     '''
     feed = BeautifulSoup(html_content, "html.parser")
 
-    filters = [_remove_blockquotes, _correct_fractions, _convert_list_styles_to_types,
+    filters = [_remove_blockquotes, _render_maths_symbols, _convert_list_styles_to_types,
                _fix_image_styles_and_paths, _add_borders_to_table,
                _remove_header_span_ids, _remove_all_links,
                _convert_underlines]
@@ -119,12 +121,37 @@ def _convert_underlines(html_soup):
 
 
 def _correct_fractions(html_soup):
-    fraction_spans = html_soup.findAll(
+    '''
+        [Deprecate] Render just fractions 
+    '''
+    math_spans = html_soup.findAll(
         "span", {"class": ["math inline", "math display"]})
-    for fraction_span in fraction_spans:
-        stripped_fraction_line = fraction_span.text.strip()
+    for math in maths:
+        stripped_fraction_line = math.text.strip()
         if "frac" in stripped_fraction_line:
             fraction_html = polish_fractions(stripped_fraction_line)
-            fraction_span.replaceWith(
+            math.replaceWith(
                 BeautifulSoup(fraction_html, 'html.parser'))
+    return html_soup
+
+
+def _render_maths_symbols(html_soup):
+    '''
+        Renders formulas and LaTex stuff to images 
+    '''
+    math_spans = html_soup.findAll(
+        "span", {"class": ["math inline", "math display"]})
+    img_count = 1
+    for math_span in math_spans:
+        latex_string = math_span.text.strip().replace("\n", "")
+        image_base64_string = convert_latex_to_image(latex_string)
+        if image_base64_string:
+            if not os.path.exists('math-images'):
+                os.mkdir('math-images')
+            image_name = os.path.join(
+                'math-images', 'math-image-' + str(img_count) + '.png')
+            save_BASE64_to_file(image_name, image_base64_string)
+            img_tag = html_soup.new_tag("img", src=image_name)
+            math_span.replaceWith(img_tag)
+            img_count += 1
     return html_soup

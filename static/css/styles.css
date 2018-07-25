@@ -23,15 +23,16 @@ hr {
 
 .lbl-version {
 	color: white;
-	background-color: #000000;
+	background-color: #e34543;
 	padding: 3px 6px;
 	font-size: 12px;
 }
 
 #count {
-	border: 1.2px solid black;
+	border: 1.2px solid #e34543;
 	padding: 3px;
 	font-size: 12px;
+	color: #e34543;
 }
 
 .btn {
