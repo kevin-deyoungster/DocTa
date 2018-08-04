@@ -3,9 +3,11 @@ from config import data
 from modules import convertor
 from flask_cors import CORS
 from flask import Flask, render_template, request, send_file
+import webbrowser
 
 # A few background checks
 setup.initiate()
+webbrowser.open("http://localhost:5000")
 
 app = Flask(__name__)
 CORS(app)

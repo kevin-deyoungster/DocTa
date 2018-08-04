@@ -51,7 +51,6 @@ FORM.onsubmit = function(event) {
 	}
 
 	SUBMIT_BUTTON.value = 'Converting...';
-	SUBMIT_BUTTON.style.backgroundColor = '#e34543';
 	axios({
 		method: 'post',
 		url: '/convert',
@@ -63,11 +62,9 @@ FORM.onsubmit = function(event) {
 			filename = response.headers['content-disposition'].split('=')[1];
 			downloadFile(response.data, filename);
 			SUBMIT_BUTTON.value = 'Convert';
-			SUBMIT_BUTTON.style.backgroundColor = '#000000';
 		})
 		.catch(err => {
 			SUBMIT_BUTTON.value = 'Convert';
-			SUBMIT_BUTTON.style.backgroundColor = '#000000';
 			alert(err);
 		});
 	return false;

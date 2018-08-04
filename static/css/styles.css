@@ -23,20 +23,20 @@ hr {
 
 .lbl-version {
 	color: white;
-	background-color: #e34543;
+	background-color: #4347e3;
 	padding: 3px 6px;
 	font-size: 12px;
 }
 
 #count {
-	border: 1.2px solid #e34543;
+	border: 1.2px solid #4347e3;
 	padding: 3px;
 	font-size: 12px;
-	color: #e34543;
+	color: #4347e3;
 }
 
 .btn {
-	background-color: #000000;
+	background-color: #4347e3;
 	color: white;
 	border: 1px;
 	padding: 6px 12px;
@@ -44,7 +44,7 @@ hr {
 }
 
 .btn:hover {
-	background-color: #222222;
+	background-color: #3337c6;
 }
 
 .btn:focus {
