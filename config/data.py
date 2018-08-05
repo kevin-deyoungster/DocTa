@@ -1,4 +1,4 @@
-JOBS_FOLDER = "C:\\Users\\kaminoshinyu\\DocTa\\jobs"
+JOBS_FOLDER = "C:\\Users\\kaminoshinyu\\Desktop\\jobs"
 HTML_HEADING = "DocTa"
 VERSION = "v1.6"
 PERSIST_JOBS = False
