@@ -27,22 +27,24 @@ def get_sections(soup, separator):
                     else:
                         sections[current_heading] = temp_track.copy()
                         print(
-                            f"Created new section {current_heading} with content")
+                            f"Created new section {current_heading} with {len(temp_track.copy())} elements")
                         temp_track.clear()
 
                 heading = element.get_text().strip()
                 current_heading = heading
                 # We don't add the heading to temp track because we don't want headings in it
-                print(f"Found new heading {current_heading}")
+                # print(f"Found new heading {current_heading}")
             else:  # if element is not a marked heading, just add it to the stuff
 
                 temp_track.append(element)
-                print(f"Added element {element.name} to {current_heading}")
+                # print(f"Added element {element.name} to {current_heading}")
 
             # If element is the last element, save section and reset
             if elements.index(element) == len(elements) - 1:
-                print(f'Reached last element {current_heading}')
+                # print(f'Reached last element added to {current_heading}')
                 sections[current_heading] = temp_track.copy()
+                print(
+                    f"Created last section {current_heading} with {len(temp_track.copy())} elements\n")
                 temp_track.clear()
         return sections
     else:
