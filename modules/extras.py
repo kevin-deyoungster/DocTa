@@ -1,6 +1,5 @@
 from bs4 import BeautifulSoup
 from os import path
-from .mathPolish import *
 from .mathRender import *
 from .utils import *
 
