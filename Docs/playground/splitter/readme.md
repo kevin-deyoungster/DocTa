@@ -10,6 +10,14 @@ intervention
 This will make things easier because users can handle splitting on the nice frontend of word, instead of doing it
 in the HTML document
 
+# Wed, August 8, 2018
+
+- Yayyyyy!! I've upgraded the algorithm to work with subfolders, yay for recursion!!!! etc.
+- Double yayy!!! I've also upgraded the algo to work with images!!!!!
+- It seems its getting close to completion. I'll need to test some more on other documents.
+  -Another Big lessons is: Test it out with a smaller version of the problem first, i.e. if possible, create a simpler test file which is similar to the real problem, and 'strawman' it.
+- Automating the system
+
 ## Algorithm
 
 ### Todo
