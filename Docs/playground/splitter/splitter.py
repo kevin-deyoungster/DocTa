@@ -3,55 +3,56 @@ from werkzeug import secure_filename
 import os
 import shutil
 
+PREPEND_FOLDER_NAME = "-prepend"
 
-def get_sections(soup, chosen_separator):
+
+def get_sections(soup, separator_symbol):
+    '''
+    Takes in a beautiful souped html and split its according to 'chosen separator'
+    Assumptions: The converted file must have a <body> tag
+    '''
     body = soup.find('body')
-    # Gets all first-level elements in the body
-    elements = body.find_all(recursive=False)
-    sections = {}
+    body_text = body.text.strip()
 
-    temp_track = []
-    current_heading = ""
-    tracking = False
-    if chosen_separator in body.text.strip():
-        for element in elements:
-            all_element_text = element.text.strip()
-            if chosen_separator in all_element_text:  # If its a marked heading
-                if temp_track:  # If we're already tracking something, save section and restart
-                    if current_heading == "":
-                        sections["prepend"] = soupify_list(temp_track.copy())
-                        # print(
-                        # f"Created prepend with {len(temp_track.copy())} elements")
-                        temp_track.clear()
+    if separator_symbol in body_text:  # There is a separator, go ahead
+
+        sections = {}
+        temp_html = ""
+        current_heading = ""
+        tags_in_body = body.find_all(recursive=False)  # first-level tags
+
+        for tag in tags_in_body:
+            tag_text = tag.text.strip()
+
+            if separator_symbol in tag_text:  # If its a marked heading
+                if temp_html != "":  # If we're already tracking something, save section and restart
+                    if current_heading == "":  # No heading has been seen yet, meaning its a prepend
+                        heading = PREPEND_FOLDER_NAME
                     else:
-                        sections[current_heading.replace(chosen_separator, "")] = soupify_list(
-                            temp_track.copy())
-                        # print(
-                        #     f"section {current_heading} with {len(temp_track.copy())} elements")
-                        temp_track.clear()
+                        heading = current_heading
+                    sections[heading] = wrap_in(temp_html, "body")
+                    temp_html = ""
+                # We don't add the heading to temp track
+                current_heading = tag_text.replace(separator_symbol, "")
 
-                heading = element.get_text().strip()
-                current_heading = heading
-                # We don't add the heading to temp track because we don't want headings in it
-                # print(f"Found new heading {current_heading}")
             else:  # if element is not a marked heading, just add it to the stuff
-
-                temp_track.append(element)
-                # print(f"Added element {element.name} to {current_heading}")
+                temp_html += str(tag)
 
             # If element is the last element, save section and reset
-            if elements.index(element) == len(elements) - 1:
-                # print(f'Reached last element added to {current_heading}')
-                sections[current_heading.replace(
-                    chosen_separator, "")] = soupify_list(temp_track.copy())
-                # print(
-                # f"Created last section {current_heading} with {len(temp_track.copy())} elements\n")
-                temp_track.clear()
+            if tags_in_body.index(tag) == len(tags_in_body) - 1:
+                sections[current_heading] = wrap_in(temp_html, "body")
+                temp_html = ""
         return sections
-    else:
+    else:  # there is no separator, don't bother yourself
         return soup
 
 # Takes a list of tags and converts it to html string ( soup )
+
+
+def wrap_in(string, wrap_tag):
+    open = f"<{wrap_tag}>"
+    close = f"</{wrap_tag}>"
+    return BeautifulSoup(f"{open}{string}{close}", "html.parser")
 
 
 def soupify_list(tag_list):
@@ -85,7 +86,7 @@ def saveSoupToHTML(soup, file_path):
             f.write(soup.prettify("utf-8"))
             return True
     except Exception as e:
-        print(e)
+        print(f"Could not save soup. Errro: {e}")
         return False
 
 
@@ -98,7 +99,8 @@ def createFolderTree(sectionized, parent_dir):
             print(f"level::: {level}")
             level_dir = os.path.join(parent_dir, secure_filename(level))
             print(f"Level_Dir::: {level_dir}")
-            os.mkdir(level_dir)
+            if not os._exists(level_dir):
+                os.makedirs(level_dir)
             createFolderTree(sectionized[level], level_dir)
     else:
         # It must be just a string i.e. BASE CASE so create the HTML file
@@ -109,14 +111,20 @@ def createFolderTree(sectionized, parent_dir):
         # Export the images to the files
         for img in sectionized.find_all('img'):
             image_path = img.get('src')
-            shutil.move(image_path, os.path.join(parent_dir, image_path))
+            if image_path:
+                shutil.move(image_path, os.path.join(parent_dir, image_path))
 
 
 def test(html_path):
     with open(html_path, encoding="utf-8") as f:
         soup = BeautifulSoup(f.read(), "html.parser")
         ssoup = sectionize(soup, ['~', '@'])
+        if not os.path.exists("tester"):
+            os.mkdir("tester")
+        else:
+            shutil.rmtree("tester")
+            os.mkdir("tester")
         createFolderTree(ssoup, "tester")
 
 
-test("index.html")
+test("test.html")
