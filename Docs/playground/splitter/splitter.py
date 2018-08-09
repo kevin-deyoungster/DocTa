@@ -13,6 +13,7 @@ def wrap_in(string, wrap_tag):
     return BeautifulSoup(f"{open}{string}{close}", "html.parser")
 
 
+TEST_FOLDER = "tester"
 PREPEND_FOLDER_NAME = "-prepend"
 
 
@@ -93,15 +94,12 @@ def createFolderTree(sections, parent_dir):
     '''
     if type(sections) == dict:  # Section has subsections
         for heading in sections:
-            print(f"Heading::: {heading}")
             heading_dir = os.path.join(parent_dir, secure_filename(heading))
-            print(f"Heading Dir::: {heading_dir}")
-            if not os._exists(heading_dir):
-                os.makedirs(heading_dir)
+            os.makedirs(heading_dir)
             createFolderTree(sections[heading], heading_dir)
     elif type(sections) == BeautifulSoup:  # Section is actually html code. Base case
         html_path = os.path.join(parent_dir, "index.html")
-        print(f"::HTML_File::: {html_path}\n")
+        # print(f"::HTML_File::: {html_path}\n")
         saveSoupToHTML(sections, html_path)
 
         # Export the images in this file to its directory
@@ -118,14 +116,13 @@ def test(html_path):
         soup = BeautifulSoup(f.read(), "html.parser")
         sections = split(soup, ['~', '@'])
 
-        FOLDER = "tester"
-        if not os.path.exists(FOLDER):
-            os.mkdir(FOLDER)
+        if not os.path.exists(TEST_FOLDER):
+            os.mkdir(TEST_FOLDER)
         else:
-            shutil.rmtree(FOLDER)
-            os.mkdir(FOLDER)
+            shutil.rmtree(TEST_FOLDER)
+            os.mkdir(TEST_FOLDER)
 
-        createFolderTree(sections, FOLDER)
+        createFolderTree(sections, TEST_FOLDER)
 
 
 test("test.html")
