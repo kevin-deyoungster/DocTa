@@ -1,6 +1,8 @@
 # It seems importing just utils causes a pyton error.
 from .utils import *
 from .extras import *
+from .splitter import *
+
 from os import path
 from datetime import datetime
 from werkzeug import secure_filename
@@ -11,7 +13,7 @@ from werkzeug import secure_filename
 '''
 
 
-def convert(files, job_folder):
+def convert(files, job_folder, separators):
     '''
     Main entry point
     '''
@@ -27,13 +29,14 @@ def convert(files, job_folder):
             {
                 "data": f,
                 "destination": file_dir,
-                "filename": file.filename
+                "filename": file.filename,
+                "separators": separators
             },
             job_dir)
 
     zip_of_job = zip_up(job_dir, job_dir)
 
-    delete_directory(job_dir)
+    # delete_directory(job_dir)
 
     return zip_of_job
 
@@ -59,7 +62,7 @@ def _convert_file(file_info, job_dir):
     petty_cleaned_html = petty_clean(tidied_html)
 
     # Save the result html content to a file
-    save_HTML_to_file(
+    output_file = save_HTML_to_file(
         petty_cleaned_html, file_info['destination'], 'index.html')
 
     # Copy the images from the media directory to the main root
@@ -73,3 +76,9 @@ def _convert_file(file_info, job_dir):
 
     # Rename all images again
     rename_image_files(file_info['destination'])
+
+    if file_info["separators"]:
+        print("Splitting into sections")
+        # Split into sections
+        split_into_sections(
+            output_file, file_info["separators"], file_info["destination"])

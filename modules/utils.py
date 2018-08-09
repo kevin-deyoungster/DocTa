@@ -52,7 +52,7 @@ def save_HTML_to_file(html_output, destination, filename):
         else:
             html_output = html_output.encode('utf-8')
         f.write(html_output)
-        return True
+        return output_file
 
 
 def save_BASE64_to_file(filepath, base64_string):

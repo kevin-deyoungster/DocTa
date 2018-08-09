@@ -1,6 +1,6 @@
 # Version 1.7 Prospects
 
-- [ ] Add Support for Splitting up the HTML Resultant Document
+- [x] Add Support for Splitting up the HTML Resultant Document
   - Write script that takes in html and splits them by headings marked by special characters
   - User puts a special character, eg. ~ where in a text where there is a heading.
   - Algorithm takes in the raw html document

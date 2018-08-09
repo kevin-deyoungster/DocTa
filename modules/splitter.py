@@ -4,7 +4,7 @@ import os
 import shutil
 
 
-def wrap_in(string, wrap_tag):
+def _wrap_in(string, wrap_tag):
     '''
     Wraps [string] in html tag [wrap_tag]
     '''
@@ -17,7 +17,7 @@ TEST_FOLDER = "tester"
 PREPEND_FOLDER_NAME = "-prepend"
 
 
-def get_sections(soup, separator_symbol):
+def _get_sections(soup, separator_symbol):
     '''
     Takes in a beautiful souped html and splits its according to 'chosen separator'
     Assumptions: The converted file must have a <body> tag
@@ -40,7 +40,7 @@ def get_sections(soup, separator_symbol):
                         heading = PREPEND_FOLDER_NAME
                     else:
                         heading = current_heading
-                    sections[heading] = wrap_in(temp_html, "body")
+                    sections[heading] = _wrap_in(temp_html, "body")
                     temp_html = ""
                 # We don't add the heading to temp track
                 current_heading = tag_text.replace(separator_symbol, "")
@@ -50,14 +50,14 @@ def get_sections(soup, separator_symbol):
 
             # If element is the last element, save section and reset
             if tags_in_body.index(tag) == len(tags_in_body) - 1:
-                sections[current_heading] = wrap_in(temp_html, "body")
+                sections[current_heading] = _wrap_in(temp_html, "body")
                 temp_html = ""
         return sections
     else:  # there is no separator, don't bother yourself
         return soup
 
 
-def split(html, separators):
+def _split(html, separators):
     '''
     The main splitting code. Recursive algorithm
     '''
@@ -67,15 +67,15 @@ def split(html, separators):
         if first_separator not in html_text:
             return html
         else:
-            soup = get_sections(html, first_separator)
+            soup = _get_sections(html, first_separator)
             for section in soup.keys():
-                soup[section] = split(soup[section], separators.copy())
+                soup[section] = _split(soup[section], separators.copy())
             return soup
     else:
         return html
 
 
-def saveSoupToHTML(soup, file_path):
+def _saveSoupToHTML(soup, file_path):
     '''
     Saves beautiful soup object to html file
     '''
@@ -88,7 +88,7 @@ def saveSoupToHTML(soup, file_path):
         return False
 
 
-def createFolderTree(sections, parent_dir):
+def _createFolderTree(the_parent, sections, parent_dir):
     '''
     Takes in sections and creates corresponding folders. Recursive
     '''
@@ -96,33 +96,26 @@ def createFolderTree(sections, parent_dir):
         for heading in sections:
             heading_dir = os.path.join(parent_dir, secure_filename(heading))
             os.makedirs(heading_dir)
-            createFolderTree(sections[heading], heading_dir)
+            _createFolderTree(the_parent, sections[heading], heading_dir)
     elif type(sections) == BeautifulSoup:  # Section is actually html code. Base case
         html_path = os.path.join(parent_dir, "index.html")
         # print(f"::HTML_File::: {html_path}\n")
-        saveSoupToHTML(sections, html_path)
+        _saveSoupToHTML(sections, html_path)
 
         # Export the images in this file to its directory
         for img in sections.find_all('img'):
-            image_path = img.get('src')
-            if image_path:
-                shutil.move(image_path, os.path.join(parent_dir, image_path))
+            image_path = os.path.join(the_parent, img.get('src'))
+            target_image_path = os.path.join(
+                the_parent, parent_dir, img.get('src'))
+            if os.path.exists(image_path):
+                # print(f"Moving {image_path} to {target_image_path}")
+                shutil.move(image_path, target_image_path)
     else:
         print(f"<===> Eih, What is a {type(sections)}")
 
 
-def test(html_path):
+def split_into_sections(html_path, separators, parent_folder):
     with open(html_path, encoding="utf-8") as f:
         soup = BeautifulSoup(f.read(), "html.parser")
-        sections = split(soup, ['~', '@'])
-
-        if not os.path.exists(TEST_FOLDER):
-            os.mkdir(TEST_FOLDER)
-        else:
-            shutil.rmtree(TEST_FOLDER)
-            os.mkdir(TEST_FOLDER)
-
-        createFolderTree(sections, TEST_FOLDER)
-
-
-test("index.html")
+        sections = _split(soup, separators)
+        _createFolderTree(parent_folder, sections, parent_folder)
