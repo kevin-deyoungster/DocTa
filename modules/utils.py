@@ -18,7 +18,7 @@ def convert_HTML(data_string, media_destination):
         : puts the images extracted in media_destination
     '''
     output_html = pypandoc.convert_text(
-        data_string, format='docx', to='html', extra_args=[r'--extract-media=' + media_destination])
+        data_string, format='docx', to='html', extra_args=['--preserve-tabs', r'--extract-media=' + media_destination])
     # print('Converted file with Pandoc!')
     return output_html
 
@@ -100,7 +100,7 @@ def normalize_media_files(root):
         full_filepath = os.path.join(root, filename)
         dest_filepath = os.path.join(root, name + '.jpg')
         if extension not in ignore_extensions:
-            Image.open(full_filepath).save(dest_filepath)
+            Image.open(full_filepath).convert('RGB').save(dest_filepath)
             # CLean up afterwards
             if os.path.exists(dest_filepath):
                 os.remove(full_filepath)

@@ -1,13 +1,17 @@
+# Version 2.0
+
+- [ ] Include Docs and Readme
+
+# Version 1.8 Prospects
+
+- [ ] Added Windows Support
+- [ ] Created Installer
+  - [ ] Included Dependency Support
+
 # Version 1.7 Prospects
 
-- [x] Add Support for Splitting up the HTML Resultant Document
-  - Write script that takes in html and splits them by headings marked by special characters
-  - User puts a special character, eg. ~ where in a text where there is a heading.
-  - Algorithm takes in the raw html document
-    - Loops through each element
-    - Check text to see if it has the split character, then split accordingly
-- [ ] Add Support to webapp where they upload a converted html and provide the split character to handle the splitting
-- [ ] Remove the title text from each section that is splat
+- [ ] Implemented proper loggging system, error file is attached to things
+- [ ] System Architecture Redesign
 
 # Version 1.6 Release Notes
 
@@ -29,8 +33,9 @@
 # Version 1.3 Release Notes
 
 - Upgraded UI
+- [x] Underlined are not underlined in the result html
 
-# TODO
+# Version 1.0 - 1.2 Release Notes
 
 - [x] Add html polisher to things
 - [x] DOC files not supported. Find a way to convert them to docx first
@@ -48,4 +53,15 @@
 - [x] Find way to extract fractions, Math Support
 - [x] Remove 'alts' from images
 - [x] Remove all links and ids, some text in docx don't show this but they really are.
-- [x] Underlined are not underlined in the result html
+
+# Version 2.0 Beta - Prospected Features
+
+- [ ] Added Support for powerpoint files!
+- [x] Add Support for Splitting up the HTML Resultant Document
+  - Write script that takes in html and splits them by headings marked by special characters
+  - User puts a special character, eg. ~ where in a text where there is a heading.
+  - Algorithm takes in the raw html document
+    - Loops through each element
+    - Check text to see if it has the split character, then split accordingly
+- [ ] Add Support to webapp where they upload a converted html and provide the split character to handle the splitting
+- [ ] Remove the title text from each section that is splitted

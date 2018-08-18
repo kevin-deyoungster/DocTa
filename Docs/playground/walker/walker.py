@@ -9,7 +9,7 @@ def walk(folder, target_extension, function):
     files = []
     for filename in glob.iglob(f"{folder}/**/*.html", recursive=True):
         file = os.path.join(folder, filename)
-        function(file)
+        function(file)  
     return True
 
 

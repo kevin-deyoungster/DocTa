@@ -106,6 +106,8 @@ venv.bak/
 #Custom stuff
 /temp
 /jobs
+/#playground
+
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml
