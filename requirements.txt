@@ -1,6 +1,7 @@
-Flask
+flask
 pypandoc
 pytidylib
 bs4
 flask-cors
 pillow
+sympy

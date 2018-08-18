@@ -1,12 +1,13 @@
 from config import setup
 from config import data
+
+setup.initiate(data)
+
 from modules import convertor
 from flask_cors import CORS
 from flask import Flask, render_template, request, send_file
 import webbrowser
 
-# A few background checks
-setup.initiate()
 webbrowser.open("http://localhost:5000")
 
 app = Flask(__name__)
