@@ -1,16 +1,9 @@
-# Version 2.0
-
-- [ ] Include Docs and Readme
-
-# Version 1.8 Prospects
-
-- [ ] Implemented proper loggging system, error file is attached to things
-- [ ] System Architecture Redesign
-
 # Version 1.7 Prospects
 
-- [ ] Added Windows Support
-- [ ] Created Installer
+- A few UI upgrades (icons!!)
+- Added install script for windows 10
+- [x] Added Windows Support
+- [x] Created Installer
   - [x] Included Dependency Support
 
 # Version 1.6 Release Notes
@@ -53,6 +46,15 @@
 - [x] Find way to extract fractions, Math Support
 - [x] Remove 'alts' from images
 - [x] Remove all links and ids, some text in docx don't show this but they really are.
+
+# Version 2.0
+
+- [ ] Include Docs and Readme
+
+# Version 1.8 Prospects
+
+- [ ] Implemented proper loggging system, error file is attached to things
+- [ ] System Architecture Redesign
 
 # Version 2.0 Beta - Prospected Features
 

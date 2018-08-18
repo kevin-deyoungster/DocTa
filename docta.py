@@ -10,7 +10,7 @@ import webbrowser
 
 webbrowser.open("http://localhost:5000")
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder="public", static_folder="public")
 CORS(app)
 
 

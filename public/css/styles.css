@@ -44,7 +44,7 @@ hr {
 }
 
 .btn:hover {
-  background-color: #3337c6;
+  background-color: #4043c0;
 }
 
 .btn:focus {
@@ -69,7 +69,7 @@ hr {
 .files {
   background-color: #f8f8f8;
   width: 480px;
-  margin-top: 18px;
+  margin-top: 24px;
 }
 
 .dropped-file {

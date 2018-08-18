@@ -3,7 +3,7 @@ const FILE_LIST = document.getElementById("dropped-files");
 const COUNT_VIEW = document.getElementById("count");
 const FORM = document.getElementById("form");
 const FILE_INPUT = document.getElementById("file");
-const SUBMIT_BUTTON = document.getElementById("submitButton");
+const SUBMIT_BUTTON_TEXT = document.getElementById("submitButtonText");
 const CLEAR_LIST_BUTTON = document.getElementById("clearList");
 
 function renderDocs() {
@@ -15,7 +15,10 @@ function renderDocs() {
     li.className = "dropped-file";
     li.innerText = file.name;
     let span = document.createElement("span");
-    span.innerText = "X";
+    let i = document.createElement("i");
+    i.className = "fa fa-times";
+    span.appendChild(i);
+    // span.innerText = "X";
     span.className = "dropped-file-close";
     span.onclick = () => {
       ALL_FILES.splice(ALL_FILES.indexOf(file), 1);
@@ -50,7 +53,7 @@ FORM.onsubmit = function(event) {
     formData.append("file[]", file);
   }
 
-  SUBMIT_BUTTON.value = "Converting...";
+  SUBMIT_BUTTON_TEXT.innerText = "Converting...";
   axios({
     method: "post",
     url: "/convert",
@@ -61,10 +64,10 @@ FORM.onsubmit = function(event) {
     .then(response => {
       filename = response.headers["content-disposition"].split("=")[1];
       downloadFile(response.data, filename);
-      SUBMIT_BUTTON.value = "Convert";
+      SUBMIT_BUTTON_TEXT.innerText = "Convert";
     })
     .catch(err => {
-      SUBMIT_BUTTON.value = "Convert";
+      SUBMIT_BUTTON_TEXT.innerText = "Convert";
       alert(err);
     });
   return false;
