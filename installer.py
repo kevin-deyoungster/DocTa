@@ -48,8 +48,8 @@ def open_help_page():
 
 def self_destruct(retain_copy=True):
     shutil.copyfile(
-        os.path.join(os.getcwd(), "install.py"),
-        os.path.join(os.getcwd(), "modules\\preserved\\install.py"),
+        os.path.join(os.getcwd(), "installer.py"),
+        os.path.join(os.getcwd(), "modules\\preserved\\installer.py"),
     )
     remove(argv[0])
 
