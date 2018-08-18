@@ -1,5 +1,7 @@
 # Version 1.8 Prospects
 
+- [ ] Implemented proper loggging system, error file is attached to things
+
 _Prospective release notes will now be in 'releases' section_
 
 # Version 1.6 Release Notes
@@ -49,7 +51,6 @@ _Prospective release notes will now be in 'releases' section_
 
 # Version 1.8 Prospects
 
-- [ ] Implemented proper loggging system, error file is attached to things
 - [ ] System Architecture Redesign
 
 # Version 2.0 Beta - Prospected Features
