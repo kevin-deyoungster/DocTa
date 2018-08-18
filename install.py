@@ -37,11 +37,12 @@ def install_python_modules():
         Popen(["pip", "install", "-r", "requirements.txt"]).communicate()
         print("Installed Python Packages!")
 
+
 def open_help_page():
     readme = os.path.join(os.getcwd(), "readme.html")
     webbrowser.open(readme)
 
 
-create_desktop_shortcut("docta.py", "static/images/icon.ico")
+create_desktop_shortcut("docta.py", "static/images/favicon.ico")
 install_python_modules()
 open_help_page()
