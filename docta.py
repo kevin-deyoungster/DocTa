@@ -22,7 +22,7 @@ def index():
 @app.route("/convert", methods=["POST"])
 def upload():
     uploaded_docs = request.files.getlist("file[]")
-    zip_of_job = convertor.convert(uploaded_docs, data.JOBS_FOLDER, ["@", "~"])
+    zip_of_job = convertor.convert(uploaded_docs, data.JOBS_FOLDER)
     return send_file(
         zip_of_job, attachment_filename=data.ZIP_DEFAULT_NAME, as_attachment=True
     )

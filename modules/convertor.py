@@ -1,7 +1,6 @@
 # It seems importing just utils causes a pyton error.
 from .utils import *
 from .extras import *
-from .splitter import *
 
 from os import path
 from datetime import datetime
@@ -25,13 +24,7 @@ def convert(files, job_folder, separators=None):
         file_dir = path.join(job_dir, path.splitext(secure_filename(file.filename))[0])
         f = file.read()
         _convert_file(
-            {
-                "data": f,
-                "destination": file_dir,
-                "filename": file.filename,
-                "separators": separators,
-            },
-            job_dir,
+            {"data": f, "destination": file_dir, "filename": file.filename}, job_dir
         )
 
     zip_of_job = zip_up(job_dir, job_dir)
@@ -76,10 +69,3 @@ def _convert_file(file_info, job_dir):
 
     # Rename all images again
     rename_image_files(file_info["destination"])
-
-    if file_info["separators"]:
-        print("Splitting into sections")
-        # Split into sections
-        split_into_sections(
-            output_file, file_info["separators"], file_info["destination"]
-        )
