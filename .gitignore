@@ -107,6 +107,7 @@ venv.bak/
 /temp
 /jobs
 /#playground
+.vscode
 
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
