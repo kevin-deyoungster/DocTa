@@ -4,6 +4,7 @@
     <title> {{title}} {{version}} </title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     <link rel="icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/font-awesome.min.css') }}">
 </head>
 
 <body>
@@ -15,20 +16,21 @@
             {{version}}
         </span>
     </h1>
-
     <form id="form">
 
         <div class="buttons">
             <input type="file" id="file" name="file[]" multiple required/>
-            <label class="btn accent" for="file"> Add Documents </label>
-            <input id="submitButton" type="submit" class="btn right" value="Convert">
+            <label class="btn accent" for="file"> Add Documents <i class="fa fa-plus-square"></i> </label>
+            <button id="submitButton" type="submit" class="btn right">
+                Convert <i class="fa fa-recycle"></i>
+            </button>
         </div>
 
         <div class="files">
 
             <div class="info">
-                <span id="count">0 Document </span>
-                <span class="dropped-file-close" id="clearList"> Clear All </span>
+                <span id="count">0 Document</span>
+                <span class="dropped-file-close" id="clearList"> Clear All <i class="fa fa-times"></i> </span>
             </div>
 
             <hr>

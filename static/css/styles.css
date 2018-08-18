@@ -1,117 +1,117 @@
 * {
-	font-family: 'Lucida Grande', Helvetica, Arial, sans-serif;
-	border-radius: 3px;
+  font-family: "Lucida Grande", Helvetica, Arial, sans-serif;
+  border-radius: 3px;
 }
 
 body {
-	padding: 150px;
-	padding-left: 120px;
+  padding: 150px;
+  padding-left: 120px;
 }
 
 ol {
-	list-style-type: square;
-	padding: 20px;
-	padding-top: 0px;
-	margin: 0px;
-	margin-left: 20px;
+  list-style-type: square;
+  padding: 20px;
+  padding-top: 0px;
+  margin: 0px;
+  margin-left: 20px;
 }
 
 hr {
-	border: 0;
-	border-top: 1px solid #dddddd;
+  border: 0;
+  border-top: 1px solid #dddddd;
 }
 
 .lbl-version {
-	color: white;
-	background-color: #4347e3;
-	padding: 3px 6px;
-	font-size: 12px;
+  color: white;
+  background-color: #4347e3;
+  padding: 3px 6px;
+  font-size: 12px;
 }
 
 #count {
-	border: 1.2px solid #4347e3;
-	padding: 3px;
-	font-size: 12px;
-	color: #4347e3;
+  border: 1.2px solid #4347e3;
+  padding: 3px 9px;
+  font-size: 12px;
+  color: #4347e3;
 }
 
 .btn {
-	background-color: #4347e3;
-	color: white;
-	border: 1px;
-	padding: 6px 12px;
-	cursor: pointer;
+  background-color: #4347e3;
+  color: white;
+  border: 1px;
+  padding: 6px 12px;
+  cursor: pointer;
 }
 
 .btn:hover {
-	background-color: #3337c6;
+  background-color: #3337c6;
 }
 
 .btn:focus {
-	outline: 0;
+  outline: 0;
 }
 
 .btn:active {
-	transform: translate(0px, 2px);
-	-webkit-transform: translate(0px, 2px);
-	box-shadow: 0px 1px 0px 0px;
+  transform: translate(0px, 2px);
+  -webkit-transform: translate(0px, 2px);
+  box-shadow: 0px 1px 0px 0px;
 }
 
 .accent {
-	background-color: #f5f5f5;
-	color: #909090;
+  background-color: #f5f5f5;
+  color: #909090;
 }
 
 .accent:hover {
-	background-color: #e8e8e8;
+  background-color: #e8e8e8;
 }
 
 .files {
-	background-color: #f8f8f8;
-	width: 480px;
-	margin-top: 18px;
+  background-color: #f8f8f8;
+  width: 480px;
+  margin-top: 18px;
 }
 
 .dropped-file {
-	padding: 9px;
-	margin: 0px;
-	font-weight: bold;
+  padding: 9px;
+  margin: 0px;
+  font-weight: bold;
 }
 
 .dropped-file-close {
-	float: right;
-	cursor: pointer;
-	opacity: 0.3;
-	font-weight: normal;
-	font-family: Arial, sans-serif;
+  float: right;
+  cursor: pointer;
+  opacity: 0.3;
+  font-weight: normal;
+  font-family: Arial, sans-serif;
 }
 
 .dropped-file-close:hover {
-	opacity: 1;
-	font-weight: bold;
+  opacity: 1;
+  font-weight: bold;
 }
 
 .info {
-	padding: 20px;
-	padding-right: 29px;
-	padding-top: 12px;
-	padding-bottom: 3px;
-	font-weight: bold;
-	margin-top: 6px;
+  padding: 20px;
+  padding-right: 29px;
+  padding-top: 12px;
+  padding-bottom: 3px;
+  font-weight: bold;
+  margin-top: 6px;
 }
 
 .buttons {
-	width: 480px;
+  width: 480px;
 }
 
 .right {
-	float: right;
-	margin-top: -6px;
+  float: right;
+  margin-top: -6px;
 }
 .left {
-	float: left;
+  float: left;
 }
 
 #file {
-	display: none;
+  display: none;
 }
