@@ -1,10 +1,4 @@
-# Version 1.7 Prospects
-
-- A few UI upgrades (icons!!)
-- Added install script for windows 10
-- [x] Added Windows Support
-- [x] Created Installer
-  - [x] Included Dependency Support
+_Prospective release notes will now be in 'releases' section_
 
 # Version 1.6 Release Notes
 
