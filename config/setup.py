@@ -1,3 +1,4 @@
+import sys
 import shutil
 import importlib
 
@@ -7,9 +8,11 @@ def initiate(data):
     Checks Dependencies & Do Housekeeping
     """
     _clear_job_dir(data.JOBS_FOLDER, data.PERSIST_JOBS)
-    proceed = _dependencies_exist_in_path(
-        data.PATH_DEPENDENCIES
-    ) and _python_packages_installed(data.PYTHON_PACKAGES)
+    proceed = (
+        _dependencies_exist_in_path(data.PATH_DEPENDENCIES)
+        and _python_packages_installed(data.PYTHON_PACKAGES)
+        and _ensure_python_upwards(data.PYTHON_VERSION_MIN)
+    )
 
     if not proceed:
         exit()
@@ -21,6 +24,17 @@ def _clear_job_dir(job_dir, should_persist):
     """
     if not should_persist:
         shutil.rmtree(job_dir, ignore_errors=True)
+
+
+def _ensure_python_upwards(python_version):
+    current_python_version = ".".join([str(i) for i in sys.version_info[:2]])
+    if current_python_version < python_version:
+        print(
+            f"[Config]: Python Version must be {python_version}. Detected Python {current_python_version}"
+        )
+        return False
+    else:
+        return True
 
 
 def _python_packages_installed(python_packages):

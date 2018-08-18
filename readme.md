@@ -4,14 +4,14 @@
 
 # Version 1.8 Prospects
 
-- [ ] Added Windows Support
-- [ ] Created Installer
-  - [ ] Included Dependency Support
+- [ ] Implemented proper loggging system, error file is attached to things
+- [ ] System Architecture Redesign
 
 # Version 1.7 Prospects
 
-- [ ] Implemented proper loggging system, error file is attached to things
-- [ ] System Architecture Redesign
+- [ ] Added Windows Support
+- [ ] Created Installer
+  - [x] Included Dependency Support
 
 # Version 1.6 Release Notes
 
