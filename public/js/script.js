@@ -65,6 +65,9 @@ FORM.onsubmit = function(event) {
       filename = response.headers["content-disposition"].split("=")[1];
       downloadFile(response.data, filename);
       SUBMIT_BUTTON_TEXT.innerText = "Convert";
+      clearFiles();
+      resetInput();
+      renderDocs();
     })
     .catch(err => {
       SUBMIT_BUTTON_TEXT.innerText = "Convert";

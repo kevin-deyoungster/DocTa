@@ -48,13 +48,13 @@ def open_help_page():
 
 def self_destruct(retain_copy=True):
     shutil.copyfile(
-        os.path.join(os.getcwd(), "install.py"),
-        os.path.join(os.getcwd(), "modules\\preserved\\install.py"),
+        os.path.join(os.getcwd(), "installer.py"),
+        os.path.join(os.getcwd(), "modules\\preserved\\installer.py"),
     )
     remove(argv[0])
 
 
-create_desktop_shortcut("docta.py", "static/images/favicon.ico")
+create_desktop_shortcut("docta.py", "public/images/favicon.ico")
 install_python_modules()
 open_help_page()
 self_destruct()

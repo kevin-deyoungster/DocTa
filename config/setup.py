@@ -13,7 +13,7 @@ def initiate(data):
         and _python_packages_installed(data.PYTHON_PACKAGES)
         and _ensure_python_upwards(data.PYTHON_VERSION_MIN)
     )
-
+    _disable_flask_logging()
     if not proceed:
         exit()
 
@@ -61,3 +61,10 @@ def _dependencies_exist_in_path(dependencies):
 
 def _is_program_in_PATH(program):
     return shutil.which(program) != None
+
+
+def _disable_flask_logging():
+    import logging
+
+    log = logging.getLogger("werkzeug")
+    log.setLevel(logging.ERROR)
