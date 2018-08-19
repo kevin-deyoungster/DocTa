@@ -73,20 +73,21 @@ def copy_images_from_folder_to_root(folder_with_images, root):
     """
         Copies images to the root directory
     """
-    for media_file in os.listdir(folder_with_images):
-        media_file_path = os.path.join(folder_with_images, media_file)
-        dest_media_file_path = os.path.join(root, media_file)
-        print(f"Moving {media_file_path} to {dest_media_file_path}")
-        try:
-            shutil.move(media_file_path, dest_media_file_path)
-        except Exception as e:
-            print(
-                f"\t[Petty-Clean]: Error in moving {media_file_path} to {dest_media_file_path}"
-            )
-            print(e)
-            a = input()
+    if os.path.exists(folder_with_images):
+        for media_file in os.listdir(folder_with_images):
+            media_file_path = os.path.join(folder_with_images, media_file)
+            dest_media_file_path = os.path.join(root, media_file)
+            # print(f"Moving {media_file_path} to {dest_media_file_path}")
+            try:
+                shutil.move(media_file_path, dest_media_file_path)
+            except Exception as e:
+                # print(
+                #     f"\t[Petty-Clean]: Error in moving {media_file_path} to {dest_media_file_path}"
+                # )
+                print(e)
+                a = input()
 
-    os.rmdir(folder_with_images)
+        os.rmdir(folder_with_images)
 
 
 ignore_extensions = [".jpg", ".png", ".jpeg", ".html", ".py"]

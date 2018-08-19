@@ -27,7 +27,7 @@ def convert(files, job_folder, separators=None):
         _convert_file(
             {"data": f, "destination": file_dir, "filename": file.filename}, job_dir
         )
-        print(f"[{LOG_TAG}]: Conversion of {file.filename} Complete")
+        print(f"[{LOG_TAG}]: Conversion of '{file.filename}' Complete")
 
     zip_of_job = zip_up(job_dir, job_dir)
 
@@ -64,15 +64,17 @@ def _convert_file(file_info, job_dir):
     )
     print(f"[{LOG_TAG}]: Saved to HTML")
 
+    # Render Math Formulas if any
+
     # Copy the images from the media directory to the main root
     print(f"[{LOG_TAG}]: Moving Images to Main Folder")
 
-    # Copy the math images to the main root
     copy_images_from_folder_to_root(
         os.path.join(file_info["destination"], "media"), file_info["destination"]
     )
 
-    # copy_images_from_folder_to_root("math-images", file_info["destination"])
+    # Copy the math images to the main root
+    copy_images_from_folder_to_root("math-images", file_info["destination"])
 
     # Normalize those images
     print(f"[{LOG_TAG}]: Renaming Image and Normalizing them")

@@ -14,13 +14,13 @@ def petty_clean(html_content):
 
     filters = [
         _remove_blockquotes,
-        _render_maths_symbols,
         _convert_list_styles_to_types,
         _fix_image_styles_and_paths,
         _add_borders_to_table,
         _remove_header_span_ids,
         _remove_all_links,
         _convert_underlines,
+        _render_maths_symbols,
     ]
 
     result = feed
@@ -57,12 +57,15 @@ def _convert_list_styles_to_types(html_soup):
     Convert list styles to types eg. from [ <ol class='lower-roman'> ] -> [ <ol style='i'> ]
     """
     ordered_lists = html_soup.findAll("ol")
+    lists_changed = 0
     for ordered_list in ordered_lists:
         if "style" in ordered_list:
             style = ordered_list["style"].split(":")[1].replace(" ", "")
             list_type = list_type_of_style[style]
             del ordered_list["style"]
             ordered_list["type"] = list_type
+            lists_changed += 1
+    print(f"\t[{LOG_TAG}]: Converted {lists_changed} Lists from class to style")
     return html_soup
 
 
@@ -80,7 +83,7 @@ def _fix_image_styles_and_paths(html_soup):
         # Can't use image.pop() because image is bs4 Tag, not normal dictionary
         image["max-width"] = "100%"
         image["src"] = path.basename(image["src"])
-    print(f"{LOG_TAG}: Fixed {len(images)} Images")
+    print(f"\t[{LOG_TAG}]: Fixed {len(images)} Images")
     for embed in html_soup.findAll("embed"):
         embed["src"] = (
             path.basename(embed["src"]).replace(".emf", ".jpg").replace(".wmf", ".jpg")
@@ -102,27 +105,34 @@ def _add_borders_to_table(html_soup):
         trs = table.findAll("tr")
         for tr in trs:
             del tr["class"]
+    print(f"\t[{LOG_TAG}]: Added Borders to {len(tables)} Tables")
+
     return html_soup
 
 
 def _remove_all_links(html_soup):
-    links = html_soup.findAll("a")
+    links = html_soup.findAll("a", href=True)
     for link in links:
         del link["href"]
+    print(f"\t[{LOG_TAG}]: Removed {len(links)} Hyperlinks")
+
     return html_soup
 
 
 def _remove_header_span_ids(html_soup):
     headings = html_soup.findAll(["h1", "h2", "h3", "span"])
+    removed = 0
     for heading in headings:
         if heading.get("id"):
             del heading["id"]
-
+            removed += 1
         if heading.get("class"):
             if (heading.name == "span" and heading.get("class") == "anchor") or (
                 heading.name != "span"
-            ):
+            ):  # Get all span class='anchors', leave all other spans ( some may be underline / math images)
                 del heading["class"]
+                removed += 1
+    print(f"\t[{LOG_TAG}]: Removed IDs and Classes of {removed} Text Elements")
 
     return html_soup
 
@@ -133,6 +143,7 @@ def _convert_underlines(html_soup):
         uspan.name = "u"
         if uspan.get("class"):
             del uspan["class"]
+    print(f"\t[{LOG_TAG}]: Corrected {len(underline_spans)} Underlines")
     return html_soup
 
 
@@ -146,11 +157,16 @@ def _render_maths_symbols(html_soup):
         latex_string = math_span.text.strip().replace("\n", "")
         image_base64_string = convert_latex_to_image(latex_string)
         if image_base64_string:
+            print(f"\t\t[Math-Render]: Rendered {latex_string[:20]}")
             if not os.path.exists("math-images"):
                 os.mkdir("math-images")
-            image_name = os.path.join("math-image-" + str(img_count) + ".png")
+            image_name = os.path.join(
+                "math-images", "math-image-" + str(img_count) + ".png"
+            )
             save_BASE64_to_file(image_name, image_base64_string)
             img_tag = html_soup.new_tag("img", src=image_name)
             math_span.replaceWith(img_tag)
             img_count += 1
+    print(f"\t[{LOG_TAG}]: Rendered {len(math_spans)} Math Formulas")
+
     return html_soup
