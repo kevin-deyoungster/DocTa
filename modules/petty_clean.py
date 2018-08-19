@@ -1,6 +1,5 @@
 from bs4 import BeautifulSoup
 from os import path
-from .mathRender import *
 from .utils import *
 
 LOG_TAG = "Petty-Clean"
@@ -8,7 +7,7 @@ LOG_TAG = "Petty-Clean"
 
 def petty_clean(html_content):
     """
-    Main entry point, runs a bunch of filters on html content and returns bs4 rendered html
+    Main entry point, runs a bunch of filters on html content and returns bs4 soup
     """
     feed = BeautifulSoup(html_content, "html.parser")
 
@@ -20,14 +19,13 @@ def petty_clean(html_content):
         _remove_header_span_ids,
         _remove_all_links,
         _convert_underlines,
-        _render_maths_symbols,
     ]
 
     result = feed
     for filter in filters:
         result = filter(result)
 
-    return result.prettify().encode("utf-8")
+    return result
 
 
 def _remove_blockquotes(html_soup):
@@ -147,26 +145,26 @@ def _convert_underlines(html_soup):
     return html_soup
 
 
-def _render_maths_symbols(html_soup):
-    """
-        Renders formulas and LaTex stuff to images 
-    """
-    math_spans = html_soup.findAll("span", {"class": ["math inline", "math display"]})
-    img_count = 1
-    for math_span in math_spans:
-        latex_string = math_span.text.strip().replace("\n", "")
-        image_base64_string = convert_latex_to_image(latex_string)
-        if image_base64_string:
-            print(f"\t\t[Math-Render]: Rendered {latex_string[:20]}")
-            if not os.path.exists("math-images"):
-                os.mkdir("math-images")
-            image_name = os.path.join(
-                "math-images", "math-image-" + str(img_count) + ".png"
-            )
-            save_BASE64_to_file(image_name, image_base64_string)
-            img_tag = html_soup.new_tag("img", src=image_name)
-            math_span.replaceWith(img_tag)
-            img_count += 1
-    print(f"\t[{LOG_TAG}]: Rendered {len(math_spans)} Math Formulas")
+# def _render_maths_symbols(html_soup):
+#     """
+#         Renders formulas and LaTex stuff to images
+#     """
+#     math_spans = html_soup.findAll("span", {"class": ["math inline", "math display"]})
+#     img_count = 1
+#     for math_span in math_spans:
+#         latex_string = math_span.text.strip().replace("\n", "")
+#         image_base64_string = convert_latex_to_image(latex_string)
+#         if image_base64_string:
+#             print(f"\t\t[Math-Render]: Rendered {latex_string[:20]}")
+#             if not os.path.exists("math-images"):
+#                 os.mkdir("math-images")
+#             image_name = os.path.join(
+#                 "math-images", "math-image-" + str(img_count) + ".png"
+#             )
+#             save_BASE64_to_file(image_name, image_base64_string)
+#             img_tag = html_soup.new_tag("img", src=image_name)
+#             math_span.replaceWith(img_tag)
+#             img_count += 1
+#     print(f"\t[{LOG_TAG}]: Rendered {len(math_spans)} Math Formulas")
 
-    return html_soup
+#     return html_soup

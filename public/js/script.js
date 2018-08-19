@@ -54,6 +54,9 @@ FORM.onsubmit = function(event) {
   }
 
   SUBMIT_BUTTON_TEXT.innerText = "Converting...";
+  CONVERT_ICON = document.querySelector(".fa-recycle");
+  CONVERT_ICON.className = "fa fa-refresh";
+
   axios({
     method: "post",
     url: "/convert",
@@ -65,12 +68,14 @@ FORM.onsubmit = function(event) {
       filename = response.headers["content-disposition"].split("=")[1];
       downloadFile(response.data, filename);
       SUBMIT_BUTTON_TEXT.innerText = "Convert";
+      CONVERT_ICON.className = "fa fa-recycle";
       clearFiles();
       resetInput();
       renderDocs();
     })
     .catch(err => {
       SUBMIT_BUTTON_TEXT.innerText = "Convert";
+      CONVERT_ICON.className = "fa fa-recycle";
       alert(err);
     });
   return false;

@@ -1,6 +1,7 @@
 # It seems importing just utils causes a pyton error.
 from .utils import *
 from .petty_clean import *
+from .mathRender import *
 
 from os import path
 from datetime import datetime
@@ -56,7 +57,14 @@ def _convert_file(file_info, job_dir):
 
     print(f"[{LOG_TAG}]: Petty Cleaning...")
     # Petty Clean the html: Run Custom Cleaners
-    petty_cleaned_html = petty_clean(tidied_html)
+    petty_cleaned_soup = petty_clean(tidied_html)
+
+    # Render Math Formulas if any
+    print(f"[{LOG_TAG}]: Rendering Math Formulas...")
+    math_rendered_soup = render_maths_symbols(
+        petty_cleaned_soup, file_info["destination"]
+    )
+    petty_cleaned_html = math_rendered_soup.prettify().encode("utf-8")
 
     # Save the result html content to a file
     output_file = save_HTML_to_file(
@@ -64,17 +72,12 @@ def _convert_file(file_info, job_dir):
     )
     print(f"[{LOG_TAG}]: Saved to HTML")
 
-    # Render Math Formulas if any
-
     # Copy the images from the media directory to the main root
     print(f"[{LOG_TAG}]: Moving Images to Main Folder")
 
     copy_images_from_folder_to_root(
         os.path.join(file_info["destination"], "media"), file_info["destination"]
     )
-
-    # Copy the math images to the main root
-    copy_images_from_folder_to_root("math-images", file_info["destination"])
 
     # Normalize those images
     print(f"[{LOG_TAG}]: Renaming Image and Normalizing them")

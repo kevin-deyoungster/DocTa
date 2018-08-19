@@ -4,6 +4,8 @@ import shutil
 import base64
 from PIL import Image
 from bs4 import BeautifulSoup
+from .mathRender import *
+
 from tidylib import tidy_document
 
 """
@@ -149,3 +151,24 @@ def rename_image_files(root):
     f = open(index_file, "wb")
     f.write(html_soup.prettify().encode("utf-8"))
     f.close()
+
+
+def render_maths_symbols(html_soup, destination):
+    """
+        Renders formulas and LaTex stuff to images 
+    """
+    math_spans = html_soup.findAll("span", {"class": ["math inline", "math display"]})
+    img_count = 1
+    for math_span in math_spans:
+        latex_string = math_span.text.strip().replace("\n", "")
+        image_base64_string = convert_latex_to_image(latex_string)
+        if image_base64_string:
+            print(f"\t[Math-Render]: Rendered {latex_string[:20]}")
+            image_name = os.path.join(
+                destination, "math-image-" + str(img_count) + ".png"
+            )
+            save_BASE64_to_file(image_name, image_base64_string)
+            img_tag = html_soup.new_tag("img", src=image_name)
+            math_span.replaceWith(img_tag)
+            img_count += 1
+    return html_soup
