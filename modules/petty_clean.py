@@ -3,6 +3,8 @@ from os import path
 from .mathRender import *
 from .utils import *
 
+LOG_TAG = "Petty-Clean"
+
 
 def petty_clean(html_content):
     """
@@ -29,14 +31,18 @@ def petty_clean(html_content):
 
 
 def _remove_blockquotes(html_soup):
+    """
+    Some lists have blockquotes (creating extra space btn number and text)
+    """
     blockquotes = html_soup.findAll("blockquote")
-    # print(len(blockquotes))
     for blockquote in blockquotes:
         blockquote.unwrap()
+
+    print(f"\t[{LOG_TAG}]: Removed {len(blockquotes)} Blockquotes")
     return html_soup
 
 
-list_type_dict = {
+list_type_of_style = {
     "lower-roman": "i",
     "upper-roman": "I",
     "decimal": "1",
@@ -46,38 +52,35 @@ list_type_dict = {
 
 
 def _convert_list_styles_to_types(html_soup):
+    """
+    Because we don't want classes...
+    Convert list styles to types eg. from [ <ol class='lower-roman'> ] -> [ <ol style='i'> ]
+    """
     ordered_lists = html_soup.findAll("ol")
-    for ol in ordered_lists:
-        if "style" in ol:
-            style = ol["style"].split(":")[1].replace(" ", "")
-            list_type = list_type_dict[style]
-            del ol["style"]
-            ol["type"] = list_type
+    for ordered_list in ordered_lists:
+        if "style" in ordered_list:
+            style = ordered_list["style"].split(":")[1].replace(" ", "")
+            list_type = list_type_of_style[style]
+            del ordered_list["style"]
+            ordered_list["type"] = list_type
     return html_soup
 
 
 def _fix_image_styles_and_paths(html_soup):
     """
-    - Convert image paths from absolute to relative eg. from 'C:\.....\image1.png' -> 'image1.png'
+    - Convert image paths from absolute to relative eg. from [ 'C:\.....\image1.png' ] -> [ 'image1.png' ]
     - Remove image height, width, alt, and style tags
     """
     images = html_soup.findAll("img")
     for image in images:
-        if image.get("height"):
-            del image["height"]
-
-        if image.get("width"):
-            del image["width"]
-
-        if image.get("style"):
-            del image["style"]
-
-        if image.get("alt"):
-            del image["alt"]
-
+        _del_key_if_exist(image, "height")
+        _del_key_if_exist(image, "width")
+        _del_key_if_exist(image, "style")
+        _del_key_if_exist(image, "alt")
+        # Can't use image.pop() because image is bs4 Tag, not normal dictionary
         image["max-width"] = "100%"
         image["src"] = path.basename(image["src"])
-
+    print(f"{LOG_TAG}: Fixed {len(images)} Images")
     for embed in html_soup.findAll("embed"):
         embed["src"] = (
             path.basename(embed["src"]).replace(".emf", ".jpg").replace(".wmf", ".jpg")
@@ -85,6 +88,11 @@ def _fix_image_styles_and_paths(html_soup):
         embed.name = "img"
 
     return html_soup
+
+
+def _del_key_if_exist(dict, attribute):
+    if dict.get(attribute):
+        del dict[attribute]
 
 
 def _add_borders_to_table(html_soup):
@@ -128,19 +136,6 @@ def _convert_underlines(html_soup):
     return html_soup
 
 
-def _correct_fractions(html_soup):
-    """
-        [Deprecate] Render just fractions 
-    """
-    math_spans = html_soup.findAll("span", {"class": ["math inline", "math display"]})
-    for math in maths:
-        stripped_fraction_line = math.text.strip()
-        if "frac" in stripped_fraction_line:
-            fraction_html = polish_fractions(stripped_fraction_line)
-            math.replaceWith(BeautifulSoup(fraction_html, "html.parser"))
-    return html_soup
-
-
 def _render_maths_symbols(html_soup):
     """
         Renders formulas and LaTex stuff to images 
@@ -153,9 +148,7 @@ def _render_maths_symbols(html_soup):
         if image_base64_string:
             if not os.path.exists("math-images"):
                 os.mkdir("math-images")
-            image_name = os.path.join(
-                "math-images", "math-image-" + str(img_count) + ".png"
-            )
+            image_name = os.path.join("math-image-" + str(img_count) + ".png")
             save_BASE64_to_file(image_name, image_base64_string)
             img_tag = html_soup.new_tag("img", src=image_name)
             math_span.replaceWith(img_tag)

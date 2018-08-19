@@ -1,6 +1,6 @@
 # It seems importing just utils causes a pyton error.
 from .utils import *
-from .extras import *
+from .petty_clean import *
 
 from os import path
 from datetime import datetime
@@ -71,7 +71,8 @@ def _convert_file(file_info, job_dir):
     copy_images_from_folder_to_root(
         os.path.join(file_info["destination"], "media"), file_info["destination"]
     )
-    copy_images_from_folder_to_root("math-images", file_info["destination"])
+
+    # copy_images_from_folder_to_root("math-images", file_info["destination"])
 
     # Normalize those images
     print(f"[{LOG_TAG}]: Renaming Image and Normalizing them")
