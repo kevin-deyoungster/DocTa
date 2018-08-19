@@ -3,7 +3,6 @@ HTML_HEADING = "DocTa"
 VERSION = "v1.7"
 PERSIST_JOBS = False
 HOST = "0.0.0.0"
-ZIP_DEFAULT_NAME = "converted.zip"
 DEBUG_SERVER = False
 PATH_DEPENDENCIES = ["pandoc", "latex", "tex"]
 PYTHON_PACKAGES = ["flask", "flask_cors", "pypandoc", "tidylib", "bs4", "PIL", "sympy"]
