@@ -79,20 +79,14 @@ def copy_images_from_folder_to_root(folder_with_images, root):
         for media_file in os.listdir(folder_with_images):
             media_file_path = os.path.join(folder_with_images, media_file)
             dest_media_file_path = os.path.join(root, media_file)
-            # print(f"Moving {media_file_path} to {dest_media_file_path}")
             try:
                 shutil.move(media_file_path, dest_media_file_path)
             except Exception as e:
-                # print(
-                #     f"\t[Petty-Clean]: Error in moving {media_file_path} to {dest_media_file_path}"
-                # )
                 print(e)
-                a = input()
-
         os.rmdir(folder_with_images)
 
 
-ignore_extensions = [".jpg", ".png", ".jpeg", ".html", ".py"]
+EXTENSIONS_TO_IGNORE = [".jpg", ".png", ".jpeg", ".html", ".py"]
 
 
 def normalize_media_files(root):
@@ -104,9 +98,8 @@ def normalize_media_files(root):
         name, extension = os.path.splitext(filename)
         full_filepath = os.path.join(root, filename)
         dest_filepath = os.path.join(root, name + ".jpg")
-        if extension not in ignore_extensions:
+        if extension not in EXTENSIONS_TO_IGNORE:
             Image.open(full_filepath).convert("RGB").save(dest_filepath)
-            # CLean up afterwards
             if os.path.exists(dest_filepath):
                 os.remove(full_filepath)
 
@@ -125,12 +118,8 @@ def zip_up(archive_name, directory):
     return shutil.make_archive(archive_name, "zip", directory)
 
 
-exceptions = [".html"]
-
-
 def rename_image_files(root):
     img_count = 1
-    # Get the index html file
     index_file = os.path.join(root, "index.html")
     html_soup = BeautifulSoup(open(index_file, "rb"), "html.parser")
     images = html_soup.findAll("img")
@@ -141,13 +130,11 @@ def rename_image_files(root):
         if old_image_name:
             old_image_path = os.path.join(root, old_image_name)
             new_image_path = os.path.join(root, new_image_name)
-
-            # Check if the image file actually exists,
             if os.path.exists(old_image_path):
                 os.rename(old_image_path, new_image_path)
                 image["src"] = new_image_name
-
         img_count += 1
+
     f = open(index_file, "wb")
     f.write(html_soup.prettify().encode("utf-8"))
     f.close()

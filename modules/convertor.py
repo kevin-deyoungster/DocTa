@@ -1,11 +1,10 @@
 # It seems importing just utils causes a pyton error.
 from .utils import *
 from .petty_clean import *
-from .mathRender import *
 
 from os import path
-from datetime import datetime
 from werkzeug import secure_filename
+from uuid import uuid4
 
 LOG_TAG = "Convertor"
 """
@@ -14,25 +13,22 @@ LOG_TAG = "Convertor"
 """
 
 
-def convert(files, job_folder, separators=None):
-    """
-    Main entry point
-    """
-    time_stamp = str(datetime.now().strftime("%m-%d-%Y.%H-%M-%S"))
-    job_dir = path.join(job_folder, time_stamp)
-    os.makedirs(job_dir)
+def convert(files, job_folder):
+    jobs_dir = path.join(job_folder, str(uuid4()))
+    os.makedirs(jobs_dir)
 
     for file in files:
-        file_dir = path.join(job_dir, path.splitext(secure_filename(file.filename))[0])
-        f = file.read()
+        safe_filename = path.splitext(secure_filename(file.filename))[0]  # (name,ext)
+        job_dir = path.join(jobs_dir, safe_filename)
         _convert_file(
-            {"data": f, "destination": file_dir, "filename": file.filename}, job_dir
+            {"data": file.read(), "destination": job_dir, "filename": safe_filename},
+            jobs_dir,
         )
         print(f"[{LOG_TAG}]: Conversion of '{file.filename}' Complete")
 
-    zip_of_job = zip_up(job_dir, job_dir)
+    zip_of_job = zip_up(jobs_dir, jobs_dir)
 
-    delete_directory(job_dir)
+    delete_directory(jobs_dir)
 
     return zip_of_job
 
@@ -40,12 +36,9 @@ def convert(files, job_folder, separators=None):
 def _convert_file(file_info, job_dir):
 
     print(f"\n[{LOG_TAG}]: Converting '{file_info['filename']}'")
+
     # Create the File's Directory [ turns out if there isn't any image in the file it won't create the folder]
     os.makedirs(file_info["destination"])
-
-    # Create Proper Filename
-    filename = os.path.splitext(file_info["filename"])[0]
-    file_info["filename"] = filename
 
     # Convert docx file to html with Pandoc
     output_html = convert_HTML(file_info["data"], file_info["destination"])
@@ -55,11 +48,11 @@ def _convert_file(file_info, job_dir):
     tidied_html = tidy_HTML(output_html)
     print(f"[{LOG_TAG}]: Tidied HTML with HTMLTidy")
 
-    print(f"[{LOG_TAG}]: Petty Cleaning...")
     # Petty Clean the html: Run Custom Cleaners
+    print(f"[{LOG_TAG}]: Petty Cleaning...")
     petty_cleaned_soup = petty_clean(tidied_html)
 
-    # Render Math Formulas if any
+    # Render Math Formulas if needed
     print(f"[{LOG_TAG}]: Rendering Math Formulas...")
     math_rendered_soup = render_maths_symbols(
         petty_cleaned_soup, file_info["destination"]
@@ -74,7 +67,6 @@ def _convert_file(file_info, job_dir):
 
     # Copy the images from the media directory to the main root
     print(f"[{LOG_TAG}]: Moving Images to Root Folder")
-
     copy_images_from_folder_to_root(
         os.path.join(file_info["destination"], "media"), file_info["destination"]
     )
