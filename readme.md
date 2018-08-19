@@ -1,7 +1,7 @@
 # Version 1.8 Prospects
 
 - [ ] Implemented proper loggging system, error file is attached to things
-- [ ] Frontend, when you cancel, files don't reset
+- [x] Frontend, when you cancel, files don't reset
 
 _Prospective release notes will now be in 'releases' section_
 

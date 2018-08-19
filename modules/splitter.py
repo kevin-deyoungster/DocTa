@@ -5,12 +5,12 @@ import shutil
 
 
 def _wrap_in(string, wrap_tag):
-    '''
+    """
     Wraps [string] in html tag [wrap_tag]
-    '''
+    """
     open = f"<{wrap_tag}>"
     close = f"</{wrap_tag}>"
-    return BeautifulSoup(f"{open}{string}{close}", "html.parser")
+    return BeautifulSoup(f"{owpen}{string}{close}", "html.parser")
 
 
 TEST_FOLDER = "tester"
@@ -18,11 +18,11 @@ PREPEND_FOLDER_NAME = "-prepend"
 
 
 def _get_sections(soup, separator_symbol):
-    '''
+    """
     Takes in a beautiful souped html and splits its according to 'chosen separator'
     Assumptions: The converted file must have a <body> tag
-    '''
-    body = soup.find('body')
+    """
+    body = soup.find("body")
     body_text = body.text.strip()
 
     if separator_symbol in body_text:  # There is a separator, go ahea
@@ -35,8 +35,12 @@ def _get_sections(soup, separator_symbol):
             tag_text = tag.text.strip()
 
             if separator_symbol in tag_text:  # If its a marked heading
-                if temp_html != "":  # If we're already tracking something, save section and restart
-                    if current_heading == "":  # No heading has been seen yet, meaning its a prepend
+                if (
+                    temp_html != ""
+                ):  # If we're already tracking something, save section and restart
+                    if (
+                        current_heading == ""
+                    ):  # No heading has been seen yet, meaning its a prepend
                         heading = PREPEND_FOLDER_NAME
                     else:
                         heading = current_heading
@@ -58,9 +62,9 @@ def _get_sections(soup, separator_symbol):
 
 
 def _split(html, separators):
-    '''
+    """
     The main splitting code. Recursive algorithm
-    '''
+    """
     if separators:
         first_separator = separators.pop(0)
         html_text = html.get_text()
@@ -76,9 +80,9 @@ def _split(html, separators):
 
 
 def _saveSoupToHTML(soup, file_path):
-    '''
+    """
     Saves beautiful soup object to html file
-    '''
+    """
     try:
         with open(file_path, "wb") as f:
             f.write(soup.prettify("utf-8"))
@@ -89,9 +93,9 @@ def _saveSoupToHTML(soup, file_path):
 
 
 def _createFolderTree(the_parent, sections, parent_dir):
-    '''
+    """
     Takes in sections and creates corresponding folders. Recursive
-    '''
+    """
     if type(sections) == dict:  # Section has subsections
         for heading in sections:
             heading_dir = os.path.join(parent_dir, secure_filename(heading))
@@ -103,10 +107,9 @@ def _createFolderTree(the_parent, sections, parent_dir):
         _saveSoupToHTML(sections, html_path)
 
         # Export the images in this file to its directory
-        for img in sections.find_all('img'):
-            image_path = os.path.join(the_parent, img.get('src'))
-            target_image_path = os.path.join(
-                the_parent, parent_dir, img.get('src'))
+        for img in sections.find_all("img"):
+            image_path = os.path.join(the_parent, img.get("src"))
+            target_image_path = os.path.join(the_parent, parent_dir, img.get("src"))
             if os.path.exists(image_path):
                 # print(f"Moving {image_path} to {target_image_path}")
                 shutil.move(image_path, target_image_path)
