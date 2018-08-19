@@ -70,17 +70,17 @@ def _convert_file(file_info, job_dir):
     output_file = save_HTML_to_file(
         petty_cleaned_html, file_info["destination"], "index.html"
     )
-    print(f"[{LOG_TAG}]: Saved to HTML")
+    print(f"[{LOG_TAG}]: Saved HTML Files")
 
     # Copy the images from the media directory to the main root
-    print(f"[{LOG_TAG}]: Moving Images to Main Folder")
+    print(f"[{LOG_TAG}]: Moving Images to Root Folder")
 
     copy_images_from_folder_to_root(
         os.path.join(file_info["destination"], "media"), file_info["destination"]
     )
 
     # Normalize those images
-    print(f"[{LOG_TAG}]: Renaming Image and Normalizing them")
+    print(f"[{LOG_TAG}]: Renaming Images and Normalizing them")
     normalize_media_files(file_info["destination"])
 
     # Rename all images again

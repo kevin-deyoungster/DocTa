@@ -35,7 +35,6 @@ def _remove_blockquotes(html_soup):
     blockquotes = html_soup.findAll("blockquote")
     for blockquote in blockquotes:
         blockquote.unwrap()
-
     print(f"\t[{LOG_TAG}]: Removed {len(blockquotes)} Blockquotes")
     return html_soup
 
@@ -74,10 +73,10 @@ def _fix_image_styles_and_paths(html_soup):
     """
     images = html_soup.findAll("img")
     for image in images:
-        _del_key_if_exist(image, "height")
-        _del_key_if_exist(image, "width")
-        _del_key_if_exist(image, "style")
-        _del_key_if_exist(image, "alt")
+        _del_attribute(image, "height")
+        _del_attribute(image, "width")
+        _del_attribute(image, "style")
+        _del_attribute(image, "alt")
         # Can't use image.pop() because image is bs4 Tag, not normal dictionary
         image["max-width"] = "100%"
         image["src"] = path.basename(image["src"])
@@ -91,7 +90,10 @@ def _fix_image_styles_and_paths(html_soup):
     return html_soup
 
 
-def _del_key_if_exist(dict, attribute):
+def _del_attribute(dict, attribute):
+    """
+    Deletes [attribute] from dictionary if it exists
+    """
     if dict.get(attribute):
         del dict[attribute]
 
@@ -143,28 +145,3 @@ def _convert_underlines(html_soup):
             del uspan["class"]
     print(f"\t[{LOG_TAG}]: Corrected {len(underline_spans)} Underlines")
     return html_soup
-
-
-# def _render_maths_symbols(html_soup):
-#     """
-#         Renders formulas and LaTex stuff to images
-#     """
-#     math_spans = html_soup.findAll("span", {"class": ["math inline", "math display"]})
-#     img_count = 1
-#     for math_span in math_spans:
-#         latex_string = math_span.text.strip().replace("\n", "")
-#         image_base64_string = convert_latex_to_image(latex_string)
-#         if image_base64_string:
-#             print(f"\t\t[Math-Render]: Rendered {latex_string[:20]}")
-#             if not os.path.exists("math-images"):
-#                 os.mkdir("math-images")
-#             image_name = os.path.join(
-#                 "math-images", "math-image-" + str(img_count) + ".png"
-#             )
-#             save_BASE64_to_file(image_name, image_base64_string)
-#             img_tag = html_soup.new_tag("img", src=image_name)
-#             math_span.replaceWith(img_tag)
-#             img_count += 1
-#     print(f"\t[{LOG_TAG}]: Rendered {len(math_spans)} Math Formulas")
-
-#     return html_soup

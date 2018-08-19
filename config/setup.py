@@ -1,6 +1,7 @@
 import sys
 import shutil
 import importlib
+import logging
 
 
 def initiate(data):
@@ -64,7 +65,5 @@ def _is_program_in_PATH(program):
 
 
 def _disable_flask_logging():
-    import logging
-
     log = logging.getLogger("werkzeug")
     log.setLevel(logging.ERROR)

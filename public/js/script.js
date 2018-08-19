@@ -48,37 +48,39 @@ CLEAR_LIST_BUTTON.onclick = () => {
 FORM.onsubmit = function(event) {
   event.preventDefault();
 
-  let formData = new FormData();
-  for (let file of ALL_FILES) {
-    formData.append("file[]", file);
-  }
+  if (ALL_FILES.length > 0) {
+    let formData = new FormData();
+    for (let file of ALL_FILES) {
+      formData.append("file[]", file);
+    }
 
-  SUBMIT_BUTTON_TEXT.innerText = "Converting...";
-  CONVERT_ICON = document.querySelector(".fa-recycle");
-  CONVERT_ICON.className = "fa fa-refresh";
+    SUBMIT_BUTTON_TEXT.innerText = "Converting...";
+    CONVERT_ICON = document.querySelector(".fa-recycle");
+    CONVERT_ICON.className = "fa fa-refresh";
 
-  axios({
-    method: "post",
-    url: "/convert",
-    data: formData,
-    responseType: "arraybuffer",
-    config: { headers: { "Content-Type": "multipart/form-data" } }
-  })
-    .then(response => {
-      filename = response.headers["content-disposition"].split("=")[1];
-      downloadFile(response.data, filename);
-      SUBMIT_BUTTON_TEXT.innerText = "Convert";
-      CONVERT_ICON.className = "fa fa-recycle";
-      clearFiles();
-      resetInput();
-      renderDocs();
+    axios({
+      method: "post",
+      url: "/convert",
+      data: formData,
+      responseType: "arraybuffer",
+      config: { headers: { "Content-Type": "multipart/form-data" } }
     })
-    .catch(err => {
-      SUBMIT_BUTTON_TEXT.innerText = "Convert";
-      CONVERT_ICON.className = "fa fa-recycle";
-      alert(err);
-    });
-  return false;
+      .then(response => {
+        filename = response.headers["content-disposition"].split("=")[1];
+        downloadFile(response.data, filename);
+        SUBMIT_BUTTON_TEXT.innerText = "Convert";
+        CONVERT_ICON.className = "fa fa-recycle";
+        clearFiles();
+        resetInput();
+        renderDocs();
+      })
+      .catch(err => {
+        SUBMIT_BUTTON_TEXT.innerText = "Convert";
+        CONVERT_ICON.className = "fa fa-recycle";
+        alert(err);
+      });
+    return false;
+  }
 };
 
 function downloadFile(data, filename) {
