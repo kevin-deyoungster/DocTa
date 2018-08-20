@@ -21,7 +21,7 @@ def convert(files, job_folder):
         safe_filename = path.splitext(secure_filename(file.filename))[0]  # (name,ext)
         job_dir = path.join(jobs_dir, safe_filename)
         _convert_file(
-            {"data": file.read(), "destinationss": job_dir, "filename": safe_filename},
+            {"data": file.read(), "destination": job_dir, "filename": safe_filename},
             jobs_dir,
         )
         print(f"[{LOG_TAG}]: Conversion of '{file.filename}' Complete")

@@ -33,7 +33,11 @@ function renderDocs() {
 FILE_INPUT.addEventListener(
   "change",
   function() {
-    ALL_FILES = Array.from(this.files).concat(Array.from(ALL_FILES));
+    ALL_FILES = Array.from(this.files)
+      .filter(item => {
+        return /.docx/.test(item.name);
+      })
+      .concat(Array.from(ALL_FILES));
     renderDocs();
   },
   false
