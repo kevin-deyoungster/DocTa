@@ -2,6 +2,7 @@ import sys
 import shutil
 import importlib
 import logging
+import platform
 
 
 def initiate(data):
@@ -51,6 +52,8 @@ def _python_packages_installed(python_packages):
 
 def _dependencies_exist_in_path(dependencies):
     missing_dependencies = []
+    if _system_os_is("linux"):  # For Linux we also need to check for 'tidy'
+        dependencies.append("tidy")
     for dependency in dependencies:
         in_path = _is_program_in_PATH(dependency)
         if not in_path:
@@ -67,3 +70,7 @@ def _is_program_in_PATH(program):
 def _disable_flask_logging():
     log = logging.getLogger("werkzeug")
     log.setLevel(logging.ERROR)
+
+
+def _system_os_is(os):
+    return platform.system().lower() == os
