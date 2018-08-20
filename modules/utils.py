@@ -86,7 +86,7 @@ def copy_images_from_folder_to_root(folder_with_images, root):
         os.rmdir(folder_with_images)
 
 
-EXTENSIONS_TO_IGNORE = [".jpg", ".png", ".jpeg", ".html", ".py"]
+EXTENSIONS_TO_IGNORE = [".jpg", ".png", ".jpeg", ".html", ".py", ".gif"]
 
 
 def normalize_media_files(root):
@@ -132,7 +132,8 @@ def rename_image_files(root):
             new_image_path = os.path.join(root, new_image_name)
             if os.path.exists(old_image_path):
                 os.rename(old_image_path, new_image_path)
-                image["src"] = new_image_name
+            image["src"] = new_image_name
+
         img_count += 1
 
     f = open(index_file, "wb")
