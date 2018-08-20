@@ -8,9 +8,10 @@ This App helps convert word documents to barebones HTML (without styling and all
 
 To run DocTa correctly, you'd need to install these:
 
-1. [Pandoc](https://github.com/jgm/pandoc/releases/tag/2.2.3.2)
-2. [MikTex](https://miktex.org/download) for Math Formula Support
-3. [HTML-Tidy](http://binaries.html-tidy.org/)
+1. Python 3.4 upwards
+2. [Pandoc](https://github.com/jgm/pandoc/releases/tag/2.2.3.2)
+3. [MikTex](https://miktex.org/download) for Math Formula Support
+4. [HTML-Tidy](http://binaries.html-tidy.org/)
    - Copy 'bin\tidy.dll' to 'Windows' folder
 
 ## Installation
