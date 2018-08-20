@@ -94,7 +94,7 @@ function showError(error) {
     );
   } else if (error.includes("500")) {
     alert(
-      "Server's Messed Up :(\nLook, it's not you, it's not me, it's the server. Something probably went wrong during conversion. Please contact my creator"
+      "Server's Messed Up :(\nLook, it's not you, it's not me, it's the server. Something probably went wrong during conversion.\n Please contact my creator"
     );
   } else {
     alert(erorr);
