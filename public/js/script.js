@@ -77,11 +77,25 @@ FORM.onsubmit = function(event) {
       .catch(err => {
         SUBMIT_BUTTON_TEXT.innerText = "Convert";
         CONVERT_ICON.className = "fa fa-recycle";
-        alert(err);
+        showError(err.toString());
       });
     return false;
   }
 };
+
+function showError(error) {
+  if (error.includes("Network")) {
+    alert(
+      "Server Not Running :( \nLooks like you need to run the server ('docta.py') again"
+    );
+  } else if (error.includes("500")) {
+    alert(
+      "Server's Messed Up :(\nLook, it's not you, it's not me, it's the server. Something probably went wrong during conversion. Please contact my creator"
+    );
+  } else {
+    alert(erorr);
+  }
+}
 
 function downloadFile(data, filename) {
   const url = window.URL.createObjectURL(new Blob([data]));
