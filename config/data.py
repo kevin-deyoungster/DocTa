@@ -5,6 +5,5 @@ PERSIST_JOBS = False
 HOST = "0.0.0.0"
 DEBUG_SERVER = False
 PATH_DEPENDENCIES = ["pandoc", "latex", "tex"]
-PATH_DEPENDENCIES_LINUX = ["pandoc", "tidy", "texlive-latex-base", "texlive-binaries"]
 PYTHON_PACKAGES = ["flask", "flask_cors", "pypandoc", "tidylib", "bs4", "PIL", "sympy"]
 PYTHON_VERSION_MIN = "3.4"
