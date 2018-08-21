@@ -3,6 +3,7 @@ from .utils import *
 from .petty_clean import *
 
 from os import path
+from .splitter import *
 from werkzeug import secure_filename
 from uuid import uuid4
 
@@ -77,3 +78,9 @@ def _convert_file(file_info, job_dir):
 
     # Rename all images again
     rename_image_files(file_info["destination"])
+
+    # Split the file
+    print(f"[{LOG_TAG}]: Checking for Split-Marks...")
+    index_html = os.path.join(file_info["destination"], "index.html")
+    split_into_sections(index_html, ["~", "@", "$"], file_info["destination"])
+

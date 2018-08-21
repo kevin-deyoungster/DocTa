@@ -3,6 +3,8 @@ from werkzeug import secure_filename
 import os
 import shutil
 
+LOG_TAG = "Splitter"
+
 
 def _wrap_in(string, wrap_tag):
     """
@@ -10,7 +12,7 @@ def _wrap_in(string, wrap_tag):
     """
     open = f"<{wrap_tag}>"
     close = f"</{wrap_tag}>"
-    return BeautifulSoup(f"{owpen}{string}{close}", "html.parser")
+    return BeautifulSoup(f"{open}{string}{close}", "html.parser")
 
 
 TEST_FOLDER = "tester"
@@ -119,6 +121,11 @@ def _createFolderTree(the_parent, sections, parent_dir):
 
 def split_into_sections(html_path, separators, parent_folder):
     with open(html_path, encoding="utf-8") as f:
-        soup = BeautifulSoup(f.read(), "html.parser")
-        sections = _split(soup, separators)
-        _createFolderTree(parent_folder, sections, parent_folder)
+        content = f.read()
+        if separators[0] in content:
+            print(f"\t[{LOG_TAG}]: Split Marks Detected. Splitting...")
+            soup = BeautifulSoup(content, "html.parser")
+            sections = _split(soup, separators)
+            _createFolderTree(parent_folder, sections, parent_folder)
+        else:
+            print(f"\t[{LOG_TAG}]: No Split Marks Detected")
