@@ -4,6 +4,7 @@ from modules import splitter as SPLITTER
 from os import path, makedirs
 from werkzeug import secure_filename
 from uuid import uuid4
+from pathlib import Path
 
 LOG_TAG = "Convertor"
 """
@@ -13,7 +14,7 @@ LOG_TAG = "Convertor"
 
 
 def convert(files, job_folder):
-    jobs_dir = path.join(job_folder, str(uuid4()))
+    jobs_dir = Path(job_folder) / str(uuid4())
     makedirs(jobs_dir)
 
     for file in files:

@@ -60,7 +60,7 @@ FORM.onsubmit = function(event) {
 
     SUBMIT_BUTTON_TEXT.innerText = "Converting...";
     CONVERT_ICON = document.querySelector(".fa-recycle");
-    CONVERT_ICON.className = "fa fa-refresh";
+    CONVERT_ICON.className = "fa fa-refresh fa-spin";
 
     axios({
       method: "post",
