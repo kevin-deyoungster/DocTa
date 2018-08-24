@@ -15,11 +15,11 @@ LOG_TAG = "Convertor"
 
 def convert(files, job_folder):
     jobs_dir = Path(job_folder) / str(uuid4())
-    makedirs(jobs_dir)
+    jobs_dir.mkdir(parents=True)
 
     for file in files:
-        safe_filename = path.splitext(secure_filename(file.filename))[0]  # (name,ext)
-        job_dir = path.join(jobs_dir, safe_filename)
+        safe_filename = secure_filename(Path(file.filename).stem)
+        job_dir = jobs_dir / safe_filename
         _convert_file(
             {"data": file.read(), "destination": job_dir, "filename": safe_filename},
             jobs_dir,
