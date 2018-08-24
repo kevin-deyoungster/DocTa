@@ -6,7 +6,7 @@ import os
 
 def convert_latex_to_image(latex_string):
     """
-        This function takes in a LaTex string and saves it to [output_path]
+        This function takes in a LaTex string and saves it as an image in [output_path]
     """
     output_filename = str(time.time()) + ".png"
     try:

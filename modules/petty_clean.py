@@ -1,6 +1,6 @@
 from bs4 import BeautifulSoup
 from os import path
-from .utils import *
+from modules import utils as UTILITIES
 
 LOG_TAG = "Petty-Clean"
 

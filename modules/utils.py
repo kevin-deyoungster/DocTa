@@ -4,7 +4,7 @@ import shutil
 import base64
 from PIL import Image
 from bs4 import BeautifulSoup
-from .mathRender import *
+from modules import mathRender
 
 from tidylib import tidy_document
 
@@ -149,7 +149,7 @@ def render_maths_symbols(html_soup, destination):
     img_count = 1
     for math_span in math_spans:
         latex_string = math_span.text.strip().replace("\n", "")
-        image_base64_string = convert_latex_to_image(latex_string)
+        image_base64_string = mathRender.convert_latex_to_image(latex_string)
         if image_base64_string:
             print(f"\t[Math-Render]: Rendered {latex_string[:20]}")
             image_name = os.path.join(
