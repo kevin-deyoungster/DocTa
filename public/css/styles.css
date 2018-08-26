@@ -8,12 +8,16 @@ body {
   padding-left: 120px;
 }
 
+p {
+  margin: 0;
+}
 ol {
   list-style-type: square;
   padding: 20px;
   padding-top: 0px;
   margin: 0px;
   margin-left: 20px;
+  margin-top: 18px;
 }
 
 hr {
@@ -73,6 +77,10 @@ hr {
   margin-top: 24px;
 }
 
+.dropped-files {
+  height: 100px;
+}
+
 .dropped-file {
   padding: 9px;
   margin: 0px;
@@ -116,4 +124,22 @@ hr {
 
 #file {
   display: none;
+}
+
+.drop-icon {
+  position: relative;
+  height: 100px;
+  width: 60%;
+  margin: auto;
+}
+
+.drop-icon-image {
+  color: #909090;
+  margin-left: 60px;
+}
+
+.drop-icon-text {
+  margin-left: 30px;
+  font-size: 14px;
+  color: #909090;
 }

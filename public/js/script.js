@@ -6,28 +6,75 @@ const FILE_INPUT = document.getElementById("file");
 const SUBMIT_BUTTON_TEXT = document.getElementById("submitButtonText");
 const CLEAR_LIST_BUTTON = document.getElementById("clearList");
 
+const DROP_ICON = document.getElementById("drop-icon");
+
+["dragenter", "dragover", "dragleave", "drop"].forEach(eventName => {
+  FORM.addEventListener(eventName, preventDefault, false);
+});
+
+function preventDefault(e) {
+  e.preventDefault();
+  e.stopPropagation();
+}
+
+FORM.addEventListener("drop", handleDrop, false);
+
+function handleDrop(e) {
+  let dt = e.dataTransfer;
+  let files = dt.files;
+  handleFiles(files);
+}
+
+function handleFiles(files) {
+  // Get list of names of all files
+  ALL_FILES_NAMES = ALL_FILES.map(item => {
+    return item.name;
+  });
+
+  ALL_FILES = Array.from(files)
+    .filter(item => {
+      console.log(item);
+      return (
+        /.docx/.test(item.name) & (ALL_FILES_NAMES.includes(item.name) == false)
+      );
+    })
+    .concat(Array.from(ALL_FILES));
+  console.log(ALL_FILES);
+  renderDocs();
+}
+
 function renderDocs() {
-  FILE_LIST.innerHTML = "";
+  // Clear Everything in the list
+  let lis = FILE_LIST.querySelectorAll("li");
+  for (let li of lis) {
+    li.parentNode.removeChild(li);
+  }
+
   COUNT_VIEW.innerText = ALL_FILES.length + " Documents";
 
-  ALL_FILES.forEach(file => {
-    let li = document.createElement("li");
-    li.className = "dropped-file";
-    li.innerText = file.name;
-    let span = document.createElement("span");
-    let i = document.createElement("i");
-    i.className = "fa fa-times";
-    span.appendChild(i);
-    // span.innerText = "X";
-    span.className = "dropped-file-close";
-    span.onclick = () => {
-      ALL_FILES.splice(ALL_FILES.indexOf(file), 1);
-      resetInput();
-      renderDocs();
-    };
-    li.appendChild(span);
-    FILE_LIST.appendChild(li);
-  });
+  if (ALL_FILES.length > 0) {
+    DROP_ICON.style.display = "None";
+    ALL_FILES.forEach(file => {
+      let li = document.createElement("li");
+      li.className = "dropped-file";
+      li.innerText = file.name;
+      let span = document.createElement("span");
+      let i = document.createElement("i");
+      i.className = "fa fa-times";
+      span.appendChild(i);
+      // span.innerText = "X";
+      span.className = "dropped-file-close";
+      span.onclick = () => {
+        ALL_FILES.splice(ALL_FILES.indexOf(file), 1);
+        resetInput();
+        renderDocs();
+      };
+      li.appendChild(span);
+      FILE_LIST.appendChild(li);
+    });
+  } else {
+    DROP_ICON.style.display = "block";
+  }
 }
 
 FILE_INPUT.addEventListener(
