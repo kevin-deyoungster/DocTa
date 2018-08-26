@@ -1,6 +1,6 @@
 JOBS_FOLDER = "C:\\Users\\kaminoshinyu\\Desktop\\jobs"
 HTML_HEADING = "DocTa"
-VERSION = "2.0"
+VERSION = "2.1"
 PERSIST_JOBS = False
 HOST = "0.0.0.0"
 DEBUG_SERVER = False
