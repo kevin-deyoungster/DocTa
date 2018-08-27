@@ -10,7 +10,7 @@ from flask import Flask, render_template, request, send_file
 import webbrowser
 
 LOG_TAG = "DocTa"
-webbrowser.open("http://localhost:5000")
+# webbrowser.open("http://localhost:5000")
 
 app = Flask(__name__, template_folder="public", static_folder="public")
 CORS(app)

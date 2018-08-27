@@ -9,8 +9,6 @@ def petty_clean(html_content):
     """
     Main entry point, runs a bunch of filters on html content (based on company specs) and returns bs4 soup
     """
-    feed = BeautifulSoup(html_content, "html.parser")
-
     filters = [
         _remove_blockquotes,
         _convert_list_styles_to_types,
@@ -21,7 +19,7 @@ def petty_clean(html_content):
         _convert_underlines,
     ]
 
-    result = feed
+    result = html_content
     for filter in filters:
         result = filter(result)
 

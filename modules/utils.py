@@ -15,6 +15,85 @@ from tidylib import tidy_document
 """
 
 
+def move_files(source, destination):
+    """
+        Move files from source to destination
+    """
+    images_moved_count = 0
+    if source.exists():
+        for file in [file for file in source.glob("**/*") if file.is_file()]:
+            shutil.move(str(file), str(destination))
+            images_moved_count += 1
+        shutil.rmtree(source)
+    print(f"\t[Image-Mover]: Moved {images_moved_count} images to job folder")
+
+
+EXTENSIONS_TO_IGNORE = [".jpg", ".png", ".jpeg", ".html", ".py", ".gif"]
+TARGET_IMAGE_EXTENSION = ".jpg"
+
+
+def convert_invalid_images_in(root):
+    """
+    Converted all unsupported images to supported format
+    """
+    converted_images_count = 0
+    for file in root.glob("**/*"):
+        file = Path(file)
+        if file.suffix not in EXTENSIONS_TO_IGNORE:
+            destination_file = file.with_suffix(TARGET_IMAGE_EXTENSION)
+            try:
+                Image.open(file).convert("RGB").save(destination_file)
+                file.unlink()
+                converted_images_count += 1
+            except Exception as e:
+                print(e)
+    print(f"\t[Image-Converter]: Converted {converted_images_count} invalid images")
+
+
+def rename_image_files_in(root):
+    img_count = 0
+    index_file = root / "index.html"
+    html_soup = BeautifulSoup(open(index_file, "rb"), "html.parser")
+    images = html_soup.findAll("img")
+    for image in images:
+        old_image = root / image["src"]
+        if old_image.exists():
+            image_extension = old_image.suffix
+            new_image = old_image.with_name(
+                "image" + str(img_count + 1).rjust(3, "0")
+            ).with_suffix(image_extension)
+            old_image.rename(new_image)
+            image["src"] = new_image.stem + new_image.suffix
+            img_count += 1
+    f = open(index_file, "wb")
+    f.write(html_soup.prettify().encode("utf-8"))
+    f.close()
+    print(f"\t[Image-Renamer]: Renamed {img_count} images")
+
+
+def render_maths(html, destination):
+    """
+        Renders formulas and LaTex stuff to images 
+    """
+    html_soup = BeautifulSoup(html, "html.parser")
+
+    math_spans = html_soup.findAll("span", {"class": ["math inline", "math display"]})
+    img_count = 1
+    for math_span in math_spans:
+        latex_string = math_span.text.strip().replace("\n", "")
+        image_base64_string = mathRender.convert_latex_to_image(latex_string)
+        if image_base64_string:
+            print(f"\t[Math-Render]: Rendered {latex_string[:20]}")
+            image_name = os.path.join(
+                destination, "math-image-" + str(img_count) + ".png"
+            )
+            save_BASE64_to_file(image_name, image_base64_string)
+            img_tag = html_soup.new_tag("img", src=image_name)
+            math_span.replaceWith(img_tag)
+            img_count += 1
+    return html_soup
+
+
 def convert_HTML(data_string, media_destination):
     """
         Converts docx data to html, puts the images extracted in media_destination
@@ -66,43 +145,6 @@ def save_BASE64_to_file(filepath, base64_string):
     return True
 
 
-def move_files(source, destination):
-    """
-        Move files from source to destination
-    """
-    images_moved_count = 0
-    if source.exists():
-        for file in [file for file in source.glob("**/*") if file.is_file()]:
-            try:
-                shutil.move(file, destination)
-                images_moved_count += 1
-            except Exception as e:
-                print(e)
-        shutil.rmtree(source)
-    print(f"\t[Image-Mover]: Moved {images_moved_count} images to job folder")
-
-
-EXTENSIONS_TO_IGNORE = [".jpg", ".png", ".jpeg", ".html", ".py", ".gif"]
-
-
-def normalize_media_files_in(root):
-    """
-        Makes sure its just pngs and jpgs in the media folder, everything else is converted
-    """
-    normalized_file_count = 0
-    for file in os.listdir(root):
-        filename = os.fsdecode(file)
-        name, extension = os.path.splitext(filename)
-        full_filepath = os.path.join(root, filename)
-        dest_filepath = os.path.join(root, name + ".jpg")
-        if extension not in EXTENSIONS_TO_IGNORE:
-            normalized_file_count += 1
-            Image.open(full_filepath).convert("RGB").save(dest_filepath)
-            if os.path.exists(dest_filepath):
-                os.remove(full_filepath)
-    print(f"\t[Image-Normalizer]: Converted {normalized_file_count} images")
-
-
 def delete_directory(directory):
     """
         Clears directory from existence
@@ -116,47 +158,3 @@ def zip_up(archive_name, directory):
     """
     return shutil.make_archive(archive_name, "zip", directory)
 
-
-def rename_image_files_in(root):
-    img_count = 1
-    index_file = os.path.join(root, "index.html")
-    html_soup = BeautifulSoup(open(index_file, "rb"), "html.parser")
-    images = html_soup.findAll("img")
-    for image in images:
-        old_image_name = image["src"]
-        filename, ext = os.path.splitext(old_image_name)
-        new_image_name = "image" + str(img_count).rjust(3, "0") + ext
-        if old_image_name:
-            old_image_path = os.path.join(root, old_image_name)
-            new_image_path = os.path.join(root, new_image_name)
-            if os.path.exists(old_image_path):
-                os.rename(old_image_path, new_image_path)
-            image["src"] = new_image_name
-
-        img_count += 1
-
-    f = open(index_file, "wb")
-    f.write(html_soup.prettify().encode("utf-8"))
-    f.close()
-    print(f"\t[Image-Renamer]: Renamed {img_count} images")
-
-
-def render_maths(html_soup, destination):
-    """
-        Renders formulas and LaTex stuff to images 
-    """
-    math_spans = html_soup.findAll("span", {"class": ["math inline", "math display"]})
-    img_count = 1
-    for math_span in math_spans:
-        latex_string = math_span.text.strip().replace("\n", "")
-        image_base64_string = mathRender.convert_latex_to_image(latex_string)
-        if image_base64_string:
-            print(f"\t[Math-Render]: Rendered {latex_string[:20]}")
-            image_name = os.path.join(
-                destination, "math-image-" + str(img_count) + ".png"
-            )
-            save_BASE64_to_file(image_name, image_base64_string)
-            img_tag = html_soup.new_tag("img", src=image_name)
-            math_span.replaceWith(img_tag)
-            img_count += 1
-    return html_soup

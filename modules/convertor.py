@@ -54,27 +54,30 @@ def __convert_doc(doc_info):
     tidied_html = UTILITIES.tidy_HTML(output_html)
     print(f"[{LOG_TAG}]: Tidied HTML with HTMLTidy")
 
-    # Petty Clean the html: Run Custom Cleaners
-    print(f"[{LOG_TAG}]: Petty Cleaning...")
-    petty_cleaned_soup = PETTY_CLEANER.petty_clean(tidied_html)
-
     # Render Math Formulas if needed
     print(f"[{LOG_TAG}]: Checking for Math Formulas...")
-    math_rendered_soup = UTILITIES.render_maths(petty_cleaned_soup, DESTINATION)
+    math_rendered_soup = UTILITIES.render_maths(tidied_html, DESTINATION)
+
+    # Petty Clean the html: Run Custom Cleaners
+    print(f"[{LOG_TAG}]: Petty Cleaning...")
+    petty_cleaned_soup = PETTY_CLEANER.petty_clean(math_rendered_soup)
 
     # Save the result html content to a file
-    converted_doc = math_rendered_soup.prettify().encode("utf-8")
+    converted_doc = petty_cleaned_soup.prettify().encode("utf-8")
     UTILITIES.save_HTML(converted_doc, DESTINATION, "index.html")
     print(f"[{LOG_TAG}]: Saved HTML File")
 
     # Copy the images from the media directory to the main root
-    print(f"[{LOG_TAG}]: Moving Images to Root Folder")
+    print(f"[{LOG_TAG}]: Moving Images to Root Folder...")
     media_folder = DESTINATION / "media"
     UTILITIES.move_files(media_folder, DESTINATION)
 
-    # Convert all non-supported images to supported | Rename images with proper count
-    print(f"[{LOG_TAG}]: Normalizing & Renaming Images...")
-    UTILITIES.normalize_media_files_in(DESTINATION)
+    # Convert all non-supported images to supported format
+    print(f"[{LOG_TAG}]: Converting Invalid Images...")
+    UTILITIES.convert_invalid_images_in(DESTINATION)
+
+    # Rename images with proper count
+    print(f"[{LOG_TAG}]: Renaming All Images...")
     UTILITIES.rename_image_files_in(DESTINATION)
 
     # Split the file
