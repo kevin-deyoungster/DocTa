@@ -7,7 +7,7 @@ LOG_TAG = "Petty-Clean"
 
 def petty_clean(html_content):
     """
-    Main entry point, runs a bunch of filters on html content and returns bs4 soup
+    Main entry point, runs a bunch of filters on html content (based on company specs) and returns bs4 soup
     """
     feed = BeautifulSoup(html_content, "html.parser")
 

@@ -2,11 +2,13 @@ from modules import utils as UTILITIES
 from modules import petty_clean as PETTY_CLEANER
 from modules import splitter as SPLITTER
 from os import path, makedirs
-from werkzeug import secure_filename
+from werkzeug.utils import secure_filename
 from uuid import uuid4
 from pathlib import Path
 
 LOG_TAG = "Convertor"
+SPLIT_MARKS = ["~", "@", "$"]
+
 """
     This module serves as the entry point for the conversion process. It utilizes all 
     the other modules and functions to successfully take files through conversion.
@@ -22,28 +24,27 @@ def convert(documents, job_folder):
             Path(doc.filename).stem
         )  # Remove invalid filename chars.
         doc_dir = jobs_dir / doc_filename
-        __convert_file(
-            {"content": doc.read(), "destination": doc_dir, "filename": doc_filename},
-            jobs_dir,
+        __convert_doc(
+            {"content": doc.read(), "destination": doc_dir, "filename": doc_filename}
         )
         print(f"[{LOG_TAG}]: Conversion of '{doc_filename}' Complete")
 
-    zip_of_job = UTILITIES.zip_up(jobs_dir, jobs_dir)
+    zip_of_jobs = UTILITIES.zip_up(jobs_dir, jobs_dir)
 
     UTILITIES.delete_directory(jobs_dir)
 
-    return zip_of_job
+    return zip_of_jobs
 
 
-def __convert_file(file_info, job_dir):
-    DESTINATION = file_info["destination"]
-    FILE_CONTENT = file_info["content"]
-    FILENAME = file_info["filename"]
+def __convert_doc(doc_info):
+    DESTINATION = doc_info["destination"]
+    FILE_CONTENT = doc_info["content"]
+    FILENAME = doc_info["filename"]
 
     print(f"\n[{LOG_TAG}]: Converting '{FILENAME}'")
 
     # Create the File's Directory [ because if there isn't any image in the file it won't create the folder]
-    makedirs(DESTINATION)
+    DESTINATION.mkdir(parents=True, exist_ok=True)
 
     # Convert docx file to html with Pandoc
     output_html = UTILITIES.convert_HTML(FILE_CONTENT, str(DESTINATION))
@@ -58,13 +59,13 @@ def __convert_file(file_info, job_dir):
     petty_cleaned_soup = PETTY_CLEANER.petty_clean(tidied_html)
 
     # Render Math Formulas if needed
-    print(f"[{LOG_TAG}]: Rendering Math Formulas...")
+    print(f"[{LOG_TAG}]: Checking for Math Formulas...")
     math_rendered_soup = UTILITIES.render_maths_symbols(petty_cleaned_soup, DESTINATION)
-    petty_cleaned_html = math_rendered_soup.prettify().encode("utf-8")
 
     # Save the result html content to a file
-    UTILITIES.save_HTML_to_file(petty_cleaned_html, DESTINATION, "index.html")
-    print(f"[{LOG_TAG}]: Saved HTML Files")
+    converted_doc = math_rendered_soup.prettify().encode("utf-8")
+    UTILITIES.save_HTML_to_file(converted_doc, DESTINATION, "index.html")
+    print(f"[{LOG_TAG}]: Saved HTML File")
 
     # Copy the images from the media directory to the main root
     print(f"[{LOG_TAG}]: Moving Images to Root Folder")
@@ -72,15 +73,12 @@ def __convert_file(file_info, job_dir):
         path.join(DESTINATION, "media"), DESTINATION
     )
 
-    # Normalize those images
-    print(f"[{LOG_TAG}]: Normalizing Images and renaming them")
-    UTILITIES.normalize_media_files(DESTINATION)
-
-    # Rename all images again
-    UTILITIES.rename_image_files(DESTINATION)
+    # Convert all non-supported images to supported | Rename images with proper count
+    print(f"[{LOG_TAG}]: Normalizing & Renaming Images...")
+    UTILITIES.normalize_media_files_in(DESTINATION)
+    UTILITIES.rename_image_files_in(DESTINATION)
 
     # Split the file
     print(f"[{LOG_TAG}]: Checking for Split-Marks...")
-    index_html = path.join(DESTINATION, "index.html")
-    SPLITTER.split_into_sections(index_html, ["~", "@", "$"], DESTINATION)
-
+    index_html = DESTINATION / "index.html"
+    SPLITTER.split_into_sections(index_html, SPLIT_MARKS, DESTINATION)

@@ -75,33 +75,39 @@ def copy_images_from_folder_to_root(folder_with_images, root):
     """
         Copies images to the root directory
     """
+    images_moved_count = 0
     if os.path.exists(folder_with_images):
         for media_file in os.listdir(folder_with_images):
             media_file_path = os.path.join(folder_with_images, media_file)
             dest_media_file_path = os.path.join(root, media_file)
             try:
                 shutil.move(media_file_path, dest_media_file_path)
+                images_moved_count += 1
             except Exception as e:
                 print(e)
         os.rmdir(folder_with_images)
+    print(f"\t[Image-Mover]: Moved {images_moved_count} images to job folder")
 
 
 EXTENSIONS_TO_IGNORE = [".jpg", ".png", ".jpeg", ".html", ".py", ".gif"]
 
 
-def normalize_media_files(root):
+def normalize_media_files_in(root):
     """
         Makes sure its just pngs and jpgs in the media folder, everything else is converted
     """
+    normalized_file_count = 0
     for file in os.listdir(root):
         filename = os.fsdecode(file)
         name, extension = os.path.splitext(filename)
         full_filepath = os.path.join(root, filename)
         dest_filepath = os.path.join(root, name + ".jpg")
         if extension not in EXTENSIONS_TO_IGNORE:
+            normalized_file_count += 1
             Image.open(full_filepath).convert("RGB").save(dest_filepath)
             if os.path.exists(dest_filepath):
                 os.remove(full_filepath)
+    print(f"\t[Image-Normalizer]: Converted {normalized_file_count} images")
 
 
 def delete_directory(directory):
@@ -118,7 +124,7 @@ def zip_up(archive_name, directory):
     return shutil.make_archive(archive_name, "zip", directory)
 
 
-def rename_image_files(root):
+def rename_image_files_in(root):
     img_count = 1
     index_file = os.path.join(root, "index.html")
     html_soup = BeautifulSoup(open(index_file, "rb"), "html.parser")
@@ -139,6 +145,7 @@ def rename_image_files(root):
     f = open(index_file, "wb")
     f.write(html_soup.prettify().encode("utf-8"))
     f.close()
+    print(f"\t[Image-Renamer]: Renamed {img_count} images")
 
 
 def render_maths_symbols(html_soup, destination):
