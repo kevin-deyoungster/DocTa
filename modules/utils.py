@@ -5,8 +5,7 @@ import base64
 from PIL import Image
 from bs4 import BeautifulSoup
 from pathlib import Path
-from modules import mathRender
-
+from modules import math_renderer
 from tidylib import tidy_document
 
 """
@@ -51,6 +50,9 @@ def convert_invalid_images_in(root):
 
 
 def rename_image_files_in(root):
+    """
+        Renames all image files in order
+    """
     img_count = 0
     index_file = root / "index.html"
     html_soup = BeautifulSoup(open(index_file, "rb"), "html.parser")
@@ -65,9 +67,8 @@ def rename_image_files_in(root):
             old_image.rename(new_image)
             image["src"] = new_image.stem + new_image.suffix
             img_count += 1
-    f = open(index_file, "wb")
-    f.write(html_soup.prettify().encode("utf-8"))
-    f.close()
+    with open(index_file, "wb") as f:
+        f.write(html_soup.prettify().encode("utf-8"))
     print(f"\t[Image-Renamer]: Renamed {img_count} images")
 
 
@@ -76,21 +77,22 @@ def render_maths(html, destination):
         Renders formulas and LaTex stuff to images 
     """
     html_soup = BeautifulSoup(html, "html.parser")
-
     math_spans = html_soup.findAll("span", {"class": ["math inline", "math display"]})
-    img_count = 1
+    formula_count = 1
     for math_span in math_spans:
         latex_string = math_span.text.strip().replace("\n", "")
-        image_base64_string = mathRender.convert_latex_to_image(latex_string)
-        if image_base64_string:
-            print(f"\t[Math-Render]: Rendered {latex_string[:20]}")
-            image_name = os.path.join(
-                destination, "math-image-" + str(img_count) + ".png"
-            )
-            save_BASE64_to_file(image_name, image_base64_string)
-            img_tag = html_soup.new_tag("img", src=image_name)
-            math_span.replaceWith(img_tag)
-            img_count += 1
+        try:
+            image_base64_string = math_renderer.convert_latex_to_image(latex_string)
+            if image_base64_string:
+                print(f"\t[Math-Render]: Rendered {latex_string[:20]}")
+                image_name = destination / f"math-image{formula_count}.png"
+                __save_BASE64_to_file(image_name, image_base64_string)
+                img_tag = html_soup.new_tag("img", src=image_name)
+                math_span.replaceWith(img_tag)
+                formula_count += 1
+        except Exception as e:
+            print(f"\t[Math-Render]: No Render {latex_string[:20]}")
+            print(f"\t{e}")
     return html_soup
 
 
@@ -136,7 +138,7 @@ def save_HTML(html_output, destination, filename):
         return output_file
 
 
-def save_BASE64_to_file(filepath, base64_string):
+def __save_BASE64_to_file(filepath, base64_string):
     """
         Saves base64 strings to file
     """
@@ -157,4 +159,3 @@ def zip_up(archive_name, directory):
         Compresses directory into a zip file
     """
     return shutil.make_archive(archive_name, "zip", directory)
-

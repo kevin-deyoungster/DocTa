@@ -1,10 +1,9 @@
 from modules import utils as UTILITIES
 from modules import petty_clean as PETTY_CLEANER
 from modules import splitter as SPLITTER
-from os import path, makedirs
 from werkzeug.utils import secure_filename
-from uuid import uuid4
 from pathlib import Path
+from uuid import uuid4
 
 LOG_TAG = "Convertor"
 SPLIT_MARKS = ["~", "@", "$"]
