@@ -1,3 +1,4 @@
 - Use PathLib and Python 3 functions for cleaner code
-
+  - Refactor image renaming system
+  - Refactor math renderer
 - Add Powerpoint Support
