@@ -13,18 +13,20 @@ LOG_TAG = "Convertor"
 """
 
 
-def convert(files, job_folder):
+def convert(documents, job_folder):
     jobs_dir = Path(job_folder) / str(uuid4())
     jobs_dir.mkdir(parents=True)
 
-    for file in files:
-        safe_filename = secure_filename(Path(file.filename).stem)
-        job_dir = jobs_dir / safe_filename
-        _convert_file(
-            {"data": file.read(), "destination": job_dir, "filename": safe_filename},
+    for doc in documents:
+        doc_filename = secure_filename(
+            Path(doc.filename).stem
+        )  # Remove invalid filename chars.
+        doc_dir = jobs_dir / doc_filename
+        __convert_file(
+            {"content": doc.read(), "destination": doc_dir, "filename": doc_filename},
             jobs_dir,
         )
-        print(f"[{LOG_TAG}]: Conversion of '{file.filename}' Complete")
+        print(f"[{LOG_TAG}]: Conversion of '{doc_filename}' Complete")
 
     zip_of_job = UTILITIES.zip_up(jobs_dir, jobs_dir)
 
@@ -33,9 +35,9 @@ def convert(files, job_folder):
     return zip_of_job
 
 
-def _convert_file(file_info, job_dir):
+def __convert_file(file_info, job_dir):
     DESTINATION = file_info["destination"]
-    FILE_CONTENT = file_info["data"]
+    FILE_CONTENT = file_info["content"]
     FILENAME = file_info["filename"]
 
     print(f"\n[{LOG_TAG}]: Converting '{FILENAME}'")

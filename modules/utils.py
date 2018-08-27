@@ -23,7 +23,7 @@ def convert_HTML(data_string, media_destination):
         data_string,
         format="docx",
         to="html",
-        extra_args=["--preserve-tabs", r"--extract-media=" + media_destination],
+        extra_args=[r"--extract-media=" + media_destination],
     )
     # print('Converted file with Pandoc!')
     return output_html
