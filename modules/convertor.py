@@ -1,16 +1,14 @@
 from modules import utils as UTILITIES
+from modules import utils_slides as SLIDE_UTILITIES
 from modules import splitter as SPLITTER
 from modules import petty_clean as PETTY_CLEANER
 
 from werkzeug.utils import secure_filename
-from subprocess import Popen, PIPE
 from pathlib import Path
 from uuid import uuid4
 
 LOG_TAG = "Convertor"
 SPLIT_MARKS = ["~", "@", "$"]
-SLIDE_EXPORTER = "modules/slides.exe"
-
 """
     This module serves as the entry point for the conversion process. It utilizes all 
     the other modules and functions to successfully take files through conversion.
@@ -95,6 +93,7 @@ def __convert_doc(doc_info):
 
 
 def __convert_slides(slides_info):
+    TAG = "Slide-Worker"
     DESTINATION = slides_info["destination"]
     DESTINATION.mkdir(parents=True, exist_ok=True)
 
@@ -105,18 +104,14 @@ def __convert_slides(slides_info):
         f.write(FILE_CONTENT)
 
     if Path(OUTPUT_PATH).exists():
-        process = Popen(
-            [SLIDE_EXPORTER, str(OUTPUT_PATH), str(DESTINATION)], stdout=PIPE, bufsize=1
-        )
-        for line in iter(process.stdout.readline, b""):
-            print(line.decode("utf-8").strip())
-        process.stdout.close()
-        return_code = process.wait()
-        if return_code == 0:
-            print("Slide Export Completed!")
-            return True
+        has_converted = SLIDE_UTILITIES.export_slides(OUTPUT_PATH, DESTINATION)
+        if has_converted:
+            print(f"[{TAG}]: Converted Slides")
+            slide_soup = SLIDE_UTILITIES.knit_images_to_soup(DESTINATION)
+            slide_HTML = slide_soup.prettify("utf-8")
+            UTILITIES.save_HTML(slide_HTML, DESTINATION, "index.html")
         else:
-            print("Slide Export Failed!")
-            return False
+            print(f"[{TAG}]: Failed to convert slides")
     else:
         print(f"[Slide-Worker]: Could not save {slides_info['filename']} to file")
+
