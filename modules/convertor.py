@@ -1,12 +1,15 @@
 from modules import utils as UTILITIES
-from modules import petty_clean as PETTY_CLEANER
 from modules import splitter as SPLITTER
+from modules import petty_clean as PETTY_CLEANER
+
 from werkzeug.utils import secure_filename
+from subprocess import Popen, PIPE
 from pathlib import Path
 from uuid import uuid4
 
 LOG_TAG = "Convertor"
 SPLIT_MARKS = ["~", "@", "$"]
+SLIDE_EXPORTER = "modules/slides.exe"
 
 """
     This module serves as the entry point for the conversion process. It utilizes all 
@@ -19,13 +22,19 @@ def convert(documents, job_folder):
     jobs_dir.mkdir(parents=True)
 
     for doc in documents:
+        extension = Path(doc.filename).suffix
         doc_filename = secure_filename(
             Path(doc.filename).stem
         )  # Remove invalid filename chars.
         doc_dir = jobs_dir / doc_filename
-        __convert_doc(
-            {"content": doc.read(), "destination": doc_dir, "filename": doc_filename}
-        )
+
+        info = {"content": doc.read(), "destination": doc_dir, "filename": doc_filename}
+        if extension == ".pptx":
+            __convert_slides(info)
+        elif extension == ".docx":
+            __convert_doc(info)
+        else:
+            print(f"[{LOG_TAG}]: Unsupported Extension")
         print(f"[{LOG_TAG}]: Conversion of '{doc_filename}' Complete")
 
     zip_of_jobs = UTILITIES.zip_up(jobs_dir, jobs_dir)
@@ -83,3 +92,31 @@ def __convert_doc(doc_info):
     print(f"[{LOG_TAG}]: Checking for Split-Marks...")
     index_html = DESTINATION / "index.html"
     SPLITTER.split_into_sections(index_html, SPLIT_MARKS, DESTINATION)
+
+
+def __convert_slides(slides_info):
+    DESTINATION = slides_info["destination"]
+    DESTINATION.mkdir(parents=True, exist_ok=True)
+
+    FILE_CONTENT = slides_info["content"]
+    FILE_NAME = secure_filename(slides_info["filename"] + ".pptx")
+    OUTPUT_PATH = DESTINATION / FILE_NAME
+    with open(OUTPUT_PATH, "wb") as f:
+        f.write(FILE_CONTENT)
+
+    if Path(OUTPUT_PATH).exists():
+        process = Popen(
+            [SLIDE_EXPORTER, str(OUTPUT_PATH), str(DESTINATION)], stdout=PIPE, bufsize=1
+        )
+        for line in iter(process.stdout.readline, b""):
+            print(line.decode("utf-8").strip())
+        process.stdout.close()
+        return_code = process.wait()
+        if return_code == 0:
+            print("Slide Export Completed!")
+            return True
+        else:
+            print("Slide Export Failed!")
+            return False
+    else:
+        print(f"[Slide-Worker]: Could not save {slides_info['filename']} to file")

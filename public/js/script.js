@@ -35,7 +35,8 @@ function handleFiles(files) {
     .filter(item => {
       console.log(item);
       return (
-        /.docx/.test(item.name) & (ALL_FILES_NAMES.includes(item.name) == false)
+        /.docx|.pptx/.test(item.name) &
+        (ALL_FILES_NAMES.includes(item.name) == false)
       );
     })
     .concat(Array.from(ALL_FILES));
@@ -82,7 +83,7 @@ FILE_INPUT.addEventListener(
   function() {
     ALL_FILES = Array.from(this.files)
       .filter(item => {
-        return /.docx/.test(item.name);
+        return /.docx|.pptx/.test(item.name);
       })
       .concat(Array.from(ALL_FILES));
     renderDocs();

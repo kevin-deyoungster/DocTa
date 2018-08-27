@@ -159,3 +159,4 @@ def zip_up(archive_name, directory):
         Compresses directory into a zip file
     """
     return shutil.make_archive(archive_name, "zip", directory)
+
