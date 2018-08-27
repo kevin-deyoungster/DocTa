@@ -60,18 +60,17 @@ def __convert_doc(doc_info):
 
     # Render Math Formulas if needed
     print(f"[{LOG_TAG}]: Checking for Math Formulas...")
-    math_rendered_soup = UTILITIES.render_maths_symbols(petty_cleaned_soup, DESTINATION)
+    math_rendered_soup = UTILITIES.render_maths(petty_cleaned_soup, DESTINATION)
 
     # Save the result html content to a file
     converted_doc = math_rendered_soup.prettify().encode("utf-8")
-    UTILITIES.save_HTML_to_file(converted_doc, DESTINATION, "index.html")
+    UTILITIES.save_HTML(converted_doc, DESTINATION, "index.html")
     print(f"[{LOG_TAG}]: Saved HTML File")
 
     # Copy the images from the media directory to the main root
     print(f"[{LOG_TAG}]: Moving Images to Root Folder")
-    UTILITIES.copy_images_from_folder_to_root(
-        path.join(DESTINATION, "media"), DESTINATION
-    )
+    media_folder = DESTINATION / "media"
+    UTILITIES.move_files(media_folder, DESTINATION)
 
     # Convert all non-supported images to supported | Rename images with proper count
     print(f"[{LOG_TAG}]: Normalizing & Renaming Images...")

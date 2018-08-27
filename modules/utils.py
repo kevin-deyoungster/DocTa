@@ -4,6 +4,7 @@ import shutil
 import base64
 from PIL import Image
 from bs4 import BeautifulSoup
+from pathlib import Path
 from modules import mathRender
 
 from tidylib import tidy_document
@@ -16,8 +17,7 @@ from tidylib import tidy_document
 
 def convert_HTML(data_string, media_destination):
     """
-        Converts docx string data to html output
-        : puts the images extracted in media_destination
+        Converts docx data to html, puts the images extracted in media_destination
     """
     output_html = pypandoc.convert_text(
         data_string,
@@ -25,7 +25,6 @@ def convert_HTML(data_string, media_destination):
         to="html",
         extra_args=[r"--extract-media=" + media_destination],
     )
-    # print('Converted file with Pandoc!')
     return output_html
 
 
@@ -33,7 +32,7 @@ def tidy_HTML(html_content):
     """
         Tidies html_content with TidyLib
     """
-    output, errors = tidy_document(
+    output, _ = tidy_document(
         html_content, options={"numeric-entities": 1, "tidy-mark": 0, "wrap": 80}
     )
 
@@ -48,16 +47,12 @@ def tidy_HTML(html_content):
     return output
 
 
-def save_HTML_to_file(html_output, destination, filename):
+def save_HTML(html_output, destination, filename):
     """
         Saves raw html output to destination + filename
     """
-    output_file = os.path.join(destination, filename)
+    output_file = destination / filename
     with open(output_file, "wb") as f:
-        if type(html_output) is not str:
-            html_output = html_output
-        else:
-            html_output = html_output.encode("utf-8")
         f.write(html_output)
         return output_file
 
@@ -71,21 +66,19 @@ def save_BASE64_to_file(filepath, base64_string):
     return True
 
 
-def copy_images_from_folder_to_root(folder_with_images, root):
+def move_files(source, destination):
     """
-        Copies images to the root directory
+        Move files from source to destination
     """
     images_moved_count = 0
-    if os.path.exists(folder_with_images):
-        for media_file in os.listdir(folder_with_images):
-            media_file_path = os.path.join(folder_with_images, media_file)
-            dest_media_file_path = os.path.join(root, media_file)
+    if source.exists():
+        for file in [file for file in source.glob("**/*") if file.is_file()]:
             try:
-                shutil.move(media_file_path, dest_media_file_path)
+                shutil.move(file, destination)
                 images_moved_count += 1
             except Exception as e:
                 print(e)
-        os.rmdir(folder_with_images)
+        shutil.rmtree(source)
     print(f"\t[Image-Mover]: Moved {images_moved_count} images to job folder")
 
 
@@ -148,7 +141,7 @@ def rename_image_files_in(root):
     print(f"\t[Image-Renamer]: Renamed {img_count} images")
 
 
-def render_maths_symbols(html_soup, destination):
+def render_maths(html_soup, destination):
     """
         Renders formulas and LaTex stuff to images 
     """
