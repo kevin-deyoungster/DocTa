@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup
 from os import path
+from pathlib import Path
 from modules import utils as UTILITIES
 
 LOG_TAG = "Petty-Clean"
@@ -66,7 +67,7 @@ def _convert_list_styles_to_types(html_soup):
 
 def _fix_image_styles_and_paths(html_soup):
     """
-    - Convert image paths from absolute to relative eg. from [ 'C:\.....\image1.png' ] -> [ 'image1.png' ]
+    - Convert image paths from absolute to relative eg. from [ 'C:\\.....\\image1.png' ] -> [ 'image1.png' ]
     - Remove image height, width, alt, and style tags
     """
     images = html_soup.findAll("img")
@@ -77,14 +78,13 @@ def _fix_image_styles_and_paths(html_soup):
         _del_attribute(image, "alt")
         # Can't use image.pop() because image is bs4 Tag, not normal dictionary
         image["max-width"] = "100%"
-        image["src"] = path.basename(image["src"])
-    print(f"\t[{LOG_TAG}]: Fixed {len(images)} Images")
-    for embed in html_soup.findAll("embed"):
-        embed["src"] = (
-            path.basename(embed["src"]).replace(".emf", ".jpg").replace(".wmf", ".jpg")
-        )
+        image["src"] = Path(image["src"]).name
+    embeds = html_soup.findAll("embed")
+    for embed in embeds:
+        new_src = Path(embed["src"]).with_suffix(".jpg").name
+        embed["src"] = new_src
         embed.name = "img"
-
+    print(f"\t[{LOG_TAG}]: Fixed {len(images)} Images & {len(embeds)} Embedded Images")
     return html_soup
 
 

@@ -1,3 +1,2 @@
 - Use PathLib and Python 3 functions for cleaner code
-  - Refactor math renderer
 - Add Powerpoint Support
