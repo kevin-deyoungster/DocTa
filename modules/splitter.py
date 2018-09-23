@@ -111,7 +111,7 @@ def _createFolderTree(the_parent, sections, parent_dir):
         # Export the images in this file to its directory
         for img in sections.find_all("img"):
             image_path = os.path.join(the_parent, img.get("src"))
-            target_image_path = os.path.join(the_parent, parent_dir, img.get("src"))
+            target_image_path = os.path.join(parent_dir, img.get("src"))
             if os.path.exists(image_path):
                 # print(f"Moving {image_path} to {target_image_path}")
                 shutil.move(image_path, target_image_path)
