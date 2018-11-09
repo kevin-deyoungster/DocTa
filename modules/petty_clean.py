@@ -77,7 +77,7 @@ def _fix_image_styles_and_paths(html_soup):
         _del_attribute(image, "style")
         _del_attribute(image, "alt")
         # Can't use image.pop() because image is bs4 Tag, not normal dictionary
-        image["max-width"] = "100%"
+        image["width"] = "100%"
         image["src"] = Path(image["src"]).name
     embeds = html_soup.findAll("embed")
     for embed in embeds:

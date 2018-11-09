@@ -1,6 +1,7 @@
 from modules import utils as UTILITIES
 from modules import utils_slides as SLIDE_UTILITIES
 from modules import splitter as SPLITTER
+from modules import split_nova as SPLITTER_2
 from modules import petty_clean as PETTY_CLEANER
 
 from werkzeug.utils import secure_filename
