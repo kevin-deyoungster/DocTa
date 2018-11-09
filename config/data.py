@@ -1,6 +1,6 @@
-JOBS_FOLDER = "/jobs"
+JOBS_FOLDER = "var/www/html/docta/jobs"
 HTML_HEADING = "DocTa"
-VERSION = "2.2"
+VERSION = "2.3"
 PERSIST_JOBS = False
 HOST = "0.0.0.0"
 DEBUG_SERVER = False
