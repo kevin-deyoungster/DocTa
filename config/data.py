@@ -1,4 +1,4 @@
-JOBS_FOLDER = "var/www/html/docta/jobs"
+JOBS_FOLDER = "jobs"
 HTML_HEADING = "DocTa"
 VERSION = "2.3"
 PERSIST_JOBS = False
