@@ -99,8 +99,10 @@ def _createFolderTree(the_parent, sections, parent_dir):
     Takes in sections and creates corresponding folders. Recursive
     """
     if type(sections) == dict:  # Section has subsections
-        for heading in sections:
-            heading_dir = os.path.join(parent_dir, secure_filename(heading))
+        for index, heading in enumerate(sections):
+            heading_dir = os.path.join(
+                parent_dir, secure_filename(f"{index+1} - {heading}")
+            )
             os.makedirs(heading_dir)
             _createFolderTree(the_parent, sections[heading], heading_dir)
     elif type(sections) == BeautifulSoup:  # Section is actually html code. Base case
