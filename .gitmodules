@@ -1,0 +1,3 @@
+[submodule "public-src"]
+	path = public-src
+	url = ./public-src
