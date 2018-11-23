@@ -1,6 +1,6 @@
 JOBS_FOLDER = "jobs"
 HTML_HEADING = "DocTa"
-VERSION = "2.3"
+VERSION = "2.4"
 PERSIST_JOBS = False
 HOST = "0.0.0.0"
 DEBUG_SERVER = False
