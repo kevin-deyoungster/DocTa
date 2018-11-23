@@ -12,7 +12,7 @@ import webbrowser
 LOG_TAG = "DocTa"
 # webbrowser.open("http://localhost:5000")
 
-app = Flask(__name__, template_folder="public", static_folder="public")
+app = Flask(__name__, template_folder="public", static_folder="public/static")
 CORS(app)
 
 
