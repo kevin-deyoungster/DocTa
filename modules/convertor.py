@@ -90,7 +90,7 @@ def __convert_doc(doc_info):
     # Split the file
     print(f"[{LOG_TAG}]: Checking for Split-Marks...")
     index_html = DESTINATION / "index.html"
-    SPLITTER.split_into_sections(index_html, SPLIT_MARKS, DESTINATION)
+    SPLITTER.split_into_sections(index_html, SPLIT_MARKS.copy(), DESTINATION)
 
 
 def __convert_slides(slides_info):
