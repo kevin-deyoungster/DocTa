@@ -1,12 +1,12 @@
+from uuid import uuid4
+from pathlib import Path
+from werkzeug.utils import secure_filename
+
 from modules import utils as UTILITIES
 from modules import utils_slides as SLIDE_UTILITIES
-from modules import splitter as SPLITTER
-from modules import split_nova as SPLITTER_2
+from modules import splita as SPLITTER
 from modules import petty_clean as PETTY_CLEANER
 
-from werkzeug.utils import secure_filename
-from pathlib import Path
-from uuid import uuid4
 
 LOG_TAG = "Convertor"
 SPLIT_MARKS = ["~", "@", "$"]
@@ -90,8 +90,7 @@ def __convert_doc(doc_info):
     # Split the file
     print(f"[{LOG_TAG}]: Checking for Split-Marks...")
     index_html = DESTINATION / "index.html"
-    SPLITTER_2.split_into_sections(index_html, SPLIT_MARKS.copy(), DESTINATION)
-    # SPLITTER.split_into_sections(index_html, SPLIT_MARKS.copy(), DESTINATION)
+    SPLITTER.split_into_sections(index_html, SPLIT_MARKS.copy(), DESTINATION)
 
 
 def __convert_slides(slides_info):
