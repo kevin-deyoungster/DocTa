@@ -113,9 +113,10 @@ def split_into_sections(html_path, separators, parent_folder):
             import json
 
             print(sections.keys())
-            with open("som.json", "w") as g:
-                json.dumps(sections)
-            # _createFolderTree("", parent_folder, sections, parent_folder)
+            print(type(sections))
+            print(type(sections["~SCREEN 5"]))
+
+            _createFolderTree("", parent_folder, sections, parent_folder)
         else:
             print(f"\t[{LOG_TAG}]: No Split Marks Detected")
 
