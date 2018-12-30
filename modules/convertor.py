@@ -3,7 +3,6 @@ from pathlib import Path
 from werkzeug.utils import secure_filename
 
 from modules import utils as UTILITIES
-from modules import utils_slides as SLIDE_UTILITIES
 from modules import splita as SPLITTER
 from modules import petty_clean as PETTY_CLEANER
 
