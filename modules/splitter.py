@@ -16,7 +16,7 @@ def _wrap_in(string, wrap_tag):
 
 
 TEST_FOLDER = "tester"
-PREPEND_FOLDER_NAME = "-prepend"
+PREPEND_FOLDER_NAME = "# prepend"
 
 
 def _get_sections(soup, separator_symbol):
@@ -101,7 +101,7 @@ def _createFolderTree(the_parent, sections, parent_dir):
     if type(sections) == dict:  # Section has subsections
         for index, heading in enumerate(sections):
             heading_dir = os.path.join(
-                parent_dir, secure_filename(f"{index+1} - {heading}")
+                parent_dir, secure_filename(f"{index+1} - {heading}").replace("_", " ")
             )
             os.makedirs(heading_dir)
             _createFolderTree(the_parent, sections[heading], heading_dir)
