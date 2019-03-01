@@ -99,6 +99,7 @@ def _create_folder_tree(the_parent, sections, parent_dir):
             heading_dir = os.path.join(
                 parent_dir, (f"{index+1}. {secure_filename(heading)}").replace("_", " ")
             )
+            print(heading_dir)
             os.makedirs(heading_dir)
             _create_folder_tree(the_parent, sections[heading], heading_dir)
     elif type(sections) == BeautifulSoup:  # Section is actually html code. Base case
@@ -124,6 +125,7 @@ def split_into_sections(html_path, separators, parent_folder):
         if separators[0] in content:
             soup = BeautifulSoup(content, "html.parser")
             sections = split_up(soup, separators)
+            print(sections)
             _create_folder_tree(parent_folder, sections, parent_folder)
         else:
             print(f"\t[{LOG_TAG}]: No Split Marks Detected")
