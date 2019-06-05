@@ -1,0 +1,71 @@
+.documentPanel {
+    background-color: #fafafa;
+    width: 480px;
+    margin-top: 24px;
+    border-radius: 6px;
+    font-weight: bold;
+    padding-bottom: 3px;
+}
+
+.info {
+    padding: 12px;
+}
+
+.documentCount {
+    color: #d8497d;
+    border: 1.2px solid #d8497d;
+    padding: 3px 6px;
+    font-size: 12px;
+    font-weight: bold;
+    border-radius: 3px;
+}
+
+.colorEmpty {
+    border-color: #909090;
+    color: #909090;
+}
+
+.clearButton {
+    float: right;
+    cursor: pointer;
+    color: #909090;
+}
+
+.clearButton:hover {
+    color: black;
+}
+
+hr {
+    border: 0;
+    border-top: 1px solid #dddddd;
+    margin-top: 0;
+}
+
+.dropIndicator {
+    margin-top: 18px;
+    color: #909090;
+    font-weight: normal;
+    text-align: center;
+    margin-bottom: 12px;
+}
+
+.fileList {
+    list-style-type: disc;
+    padding-inline-start: 30px;
+    margin: 0;
+}
+
+.file {
+    padding: 9px;
+    padding-left: 0px;
+    margin: 0px;
+    margin-right: 3px;
+    font-weight: 300;
+    font-size: 15px;
+}
+
+.removeFile {
+    float: right;
+    cursor: pointer;
+    font-size: 16px;
+}

@@ -1,0 +1,23 @@
+* {
+    font-family: "Lucida Grande", Helvetica, Arial, sans-serif;
+    border-radius: 18px;
+    cursor: default;
+}
+
+body {
+    max-width: 500px;
+    margin: 180px auto;
+}
+
+path {
+    cursor: pointer;
+}
+
+.lbl-version {
+    color: white;
+    background-color: #d8497d;
+    padding: 3px 6px;
+    margin-left: 9px;
+    font-size: 9px;
+    font-weight: normal;
+}
