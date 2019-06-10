@@ -1,4 +1,3 @@
-
 from config import setup
 from config import data
 
@@ -28,4 +27,4 @@ def upload():
 
 
 if __name__ == "__main__":
-    app.run(host=data.HOST, debug=data.DEBUG_SERVER)
+    app.run(host=data.HOST, debug=data.DEBUG_SERVER, port=data.PORT)

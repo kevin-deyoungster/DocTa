@@ -3,6 +3,7 @@ HTML_HEADING = "DocTa"
 VERSION = "2.4"
 PERSIST_JOBS = False
 HOST = "0.0.0.0"
+PORT = 8080
 DEBUG_SERVER = False
 PATH_DEPENDENCIES = ["pandoc", "latex", "tex"]
 PYTHON_PACKAGES = ["flask", "flask_cors", "pypandoc", "tidylib", "bs4", "PIL", "sympy"]
