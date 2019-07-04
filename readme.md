@@ -13,3 +13,8 @@ To run DocTa correctly, you'd need to install these:
 3. [MikTex](https://miktex.org/download) for Math Formula Support
 4. [HTML-Tidy](http://binaries.html-tidy.org/)
     > Make sure pandoc and tidy are registered in the PATH
+
+## Screenshots 
+![demo](screenshots/demo.gif)
+
+![still](screenshots/main.png)
