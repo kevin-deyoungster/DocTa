@@ -1,20 +1,17 @@
 # DocTa
+This app helps convert word documents to barebones HTML (without styling), and according to certain formatting rules (eg. img must have width 100%)
 
-This App helps convert word documents to barebones HTML (without styling and all that shazz)
 
-> Support Windows 10 Currently, Mac / Linux should work basically if you install respective dependencies
+## Installing Dependencies 
+- Install python3 upwards
+- Run `pip3 -r requirements.txt`
+- Install [Pandoc](https://github.com/jgm/pandoc/releases/tag/2.7.3), [Latex](https://miktex.org/download) and [HTML-Tidy](http://binaries.html-tidy.org/). Make sure they are added to path
 
-## Dependencies
+## Running DocTa
+Run DocTa by accessing: `python3 docta.py`
+Access DocTa at `localhost:8080`
 
-To run DocTa correctly, you'd need to install these:
-
-1. Python 3.4 upwards
-2. [Pandoc](https://github.com/jgm/pandoc/releases/tag/2.2.3.2)
-3. [MikTex](https://miktex.org/download) for Math Formula Support
-4. [HTML-Tidy](http://binaries.html-tidy.org/)
-    > Make sure pandoc and tidy are registered in the PATH
 
 ## Screenshots 
 ![demo](screenshots/demo.gif)
-
 ![still](screenshots/main.png)
