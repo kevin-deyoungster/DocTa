@@ -13,5 +13,5 @@ Access DocTa at `localhost:8080`
 
 
 ## Screenshots 
-![demo](screenshots/demo.gif)
 ![still](screenshots/main.png)
+![demo](screenshots/demo.gif)
